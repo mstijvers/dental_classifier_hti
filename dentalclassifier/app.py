@@ -23,6 +23,7 @@ model.eval()  # Set the model to evaluation mode
 transform = transforms.Compose([
     transforms.Resize((224, 224)),
     transforms.ToTensor(),
+    transforms.Lambda(lambda x: x[:3]),
     # Add other transformations as needed (e.g., normalization)
 ])
 
@@ -47,10 +48,10 @@ def classify():
                 # Preprocess the image
                 img = Image.open(image_path)
                 img = transform(img)
-                print('image transformed')
                 img = img.unsqueeze(0)  # Add a batch dimension (single image)
 
                 # Pass the image through the model
+                print(img.shape)
                 with torch.no_grad():
                     output = model(img)
 
@@ -64,8 +65,7 @@ def classify():
                 # Prepare the result message
                 result = f"Predicted Class: {predicted_class}, Confidence Score: {confidence_score:.2f}"
 
-
-    return render_template("results.html", result=result)
+    return render_template("results.html", pclass=predicted_class, cscore=confidence_score)
 
 if __name__ == "__main__":
     app.run(port=8000, debug=True)

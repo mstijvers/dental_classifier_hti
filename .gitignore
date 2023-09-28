@@ -161,3 +161,4 @@ cython_debug/
 venv/
 dentalclassifier/Dentaldata/
 .DS_Store
+detalclassifier/static/images/
