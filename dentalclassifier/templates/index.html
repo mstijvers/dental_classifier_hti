@@ -1,15 +1,62 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Image Classification</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../static/style.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Dental Website</title>
 </head>
 <body>
-<h1>Image Classification</h1>
-<form class ="grid" action="/classify" method="POST" enctype="multipart/form-data">
-  <input type="file" name="image" accept="image/*" required>
-  <input type="submit" value="Classify">
-</form>
-<h2>Result:</h2>
-<p>{{ result }}</p>
+<div style=width:100%;>
+    <div>
+        <header>
+            <img src="../static/img/clip-path-group.png" alt="Logo">
+        </header>
+    </div>
+    <div>
+        <nav>
+            <a href="#">Home</a>
+            <a href="#">My Teeth</a>
+            <a href="#">Dental Care</a>
+            <a href="#">About this AI</a>
+        </nav>
+    </div>
+
+
+    <form class="grid" action="/classify" method="POST" enctype="multipart/form-data">
+        <div class="content-container">
+            <div class="image-upload">
+                <input type="file" id="file-upload" name="image" accept="image/*" required>
+                <label for="file-upload">
+                    Upload an image
+                </label>
+            </div>
+            <div class="analysis">
+                <h2>Image Analysis</h2>
+                <button type="submit" id="analyze-button" disabled>Analyze</button>
+            </div>
+        </div>
+    </form>
+    <div>
+        {{ result }}
+    </div>
+
+
+</div>
+
+
+<script>
+    const fileUpload = document.getElementById('file-upload');
+    const analyzeButton = document.getElementById('analyze-button');
+
+    fileUpload.addEventListener('change', () => {
+        if (fileUpload.files.length > 0) {
+            analyzeButton.disabled = false;
+        } else {
+            analyzeButton.disabled = true;
+        }
+    });
+</script>
+
 </body>
 </html>

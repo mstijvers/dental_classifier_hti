@@ -47,6 +47,7 @@ def classify():
                 # Preprocess the image
                 img = Image.open(image_path)
                 img = transform(img)
+                print('image transformed')
                 img = img.unsqueeze(0)  # Add a batch dimension (single image)
 
                 # Pass the image through the model

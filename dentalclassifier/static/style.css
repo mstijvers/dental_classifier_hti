@@ -1,0 +1,104 @@
+
+html {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+}
+
+header {
+    background-color: rgba(0, 123, 255, 0);
+    padding: 3%;
+}
+
+header img {
+    height: 50px; /* Adjust the height as needed */
+    margin-right: 20px; /* Add some right margin to separate the logo from navigation */
+}
+
+nav {
+    background-color: rgba(59, 62, 63, 0);
+    padding: 10px 0;
+    text-align: center;
+    margin:auto;
+    width: 70%;
+    border-bottom: 2px solid #640808;
+}
+
+nav a {
+    text-decoration: none;
+    color: #abdcd8;
+    margin: 0 20px; /* Add left and right margin to space out the navigation items */
+    font-weight: bold;
+
+}
+
+nav a:hover {
+    border-bottom: 2px solid #640808; /* Add a slim line underneath on hover */
+}
+
+/* New styles for the image upload area and analysis section */
+.content-container {
+    display: flex;
+    margin: auto;
+    width: 70%;
+    justify-content: space-between;
+    padding: 20px;
+    height: 60%;
+
+}
+
+.image-upload {
+    flex-basis: 50%;
+    padding-right: 20px;
+}
+
+.image-upload input[type="file"] {
+    display: none;
+}
+
+.image-upload label {
+    display: block;
+    background-color: #f2f2f2;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.image-upload label:hover {
+    background-color: #e0e0e0;
+}
+
+.analysis {
+    flex-basis: 50%;
+    padding-left: 20px;
+    border-left: 0px solid #abdcd8;
+}
+
+.analysis h2 {
+    margin-top: 0;
+    color:  #640808;
+}
+
+.analysis button {
+    padding: 10px 20px;
+    background-color: #640808;
+    color: white;
+    border: none;
+    cursor: not-allowed;
+    border-radius: 25px; /* This creates completely rounded sides (half circles) */
+}
+.file-selected .analysis button {
+    cursor: pointer;
+}
+
+.parent{
+    float:left;
+    width: 100%;
+    height: auto;
+}
