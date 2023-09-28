@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="../static/style.css"/>
@@ -33,7 +34,11 @@
                 </label>
             </div>
             <div class="analysis">
-                <h1>Make a smile, so I can help!</h1>
+                <h1>
+                    <div>
+                    {{ result }}
+                    </div>
+                </h1>
                 <button type="submit" id="analyze-button" disabled>Analyze</button>
             </div>
         </div>
@@ -41,20 +46,5 @@
 
 
 </div>
-
-
-<script>
-    const fileUpload = document.getElementById('file-upload');
-    const analyzeButton = document.getElementById('analyze-button');
-
-    fileUpload.addEventListener('change', () => {
-        if (fileUpload.files.length > 0) {
-            analyzeButton.disabled = false;
-        } else {
-            analyzeButton.disabled = true;
-        }
-    });
-</script>
-
 </body>
 </html>

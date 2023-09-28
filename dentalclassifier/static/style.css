@@ -7,7 +7,7 @@ html {
 body {
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
+    font-family: Gabarito, sans-serif;
     display: flex;
 }
 
@@ -39,7 +39,7 @@ nav a {
 }
 
 nav a:hover {
-    border-bottom: 2px solid #640808; /* Add a slim line underneath on hover */
+    color: #640808; /* Add a slim line underneath on hover */
 }
 
 /* New styles for the image upload area and analysis section */
@@ -49,25 +49,32 @@ nav a:hover {
     width: 70%;
     justify-content: space-between;
     padding: 20px;
-    height: 60%;
-
+    height:45%;
+    vertical-align: middle;
 }
 
 .image-upload {
     flex-basis: 50%;
     padding-right: 20px;
+    vertical-align: middle;
 }
 
 .image-upload input[type="file"] {
     display: none;
+    vertical-align: middle;
 }
 
 .image-upload label {
     display: block;
     background-color: #f2f2f2;
+    border-radius: 25px;
     padding: 20px;
+    margin: auto;
     text-align: center;
     cursor: pointer;
+    height:100%;
+    vertical-align: middle;
+
 }
 
 .image-upload label:hover {
@@ -80,17 +87,19 @@ nav a:hover {
     border-left: 0px solid #abdcd8;
 }
 
-.analysis h2 {
+.analysis h1 {
     margin-top: 0;
     color:  #640808;
+    font-size: 70px;
 }
 
 .analysis button {
-    padding: 10px 20px;
+    padding: 10px 40px;
     background-color: #640808;
     color: white;
     border: none;
     cursor: not-allowed;
+    font-family: Gabarito, sans-serif;
     border-radius: 25px; /* This creates completely rounded sides (half circles) */
 }
 .file-selected .analysis button {
@@ -101,4 +110,14 @@ nav a:hover {
     float:left;
     width: 100%;
     height: auto;
+}
+
+.grid{
+    margin-top: 5%;
+    height: 90%;
+
+}
+
+.file-upload{
+    vertical-align: middle;
 }

@@ -1,6 +1,6 @@
 
 import torch.nn as nn
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 import os
 from torchvision import transforms
 import torch
@@ -64,7 +64,8 @@ def classify():
                 # Prepare the result message
                 result = f"Predicted Class: {predicted_class}, Confidence Score: {confidence_score:.2f}"
 
-    return render_template("index.html", result=result)
+
+    return render_template("results.html", result=result)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(port=8000, debug=True)
