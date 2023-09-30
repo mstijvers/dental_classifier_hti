@@ -61,11 +61,24 @@ def classify():
                 class_labels = ["gingivitis", "hypodontia", "discoloration", "caries", "calculus"]
                 predicted_class = class_labels[torch.argmax(probabilities)]
                 confidence_score = torch.max(probabilities).item()
+                
+                # Convert confidence_score to a percentage
+                confidence_score_percentage = confidence_score * 100
+                formatted_confidence_score = f"{confidence_score_percentage:.0f}%"
 
                 # Prepare the result message
                 result = f"Predicted Class: {predicted_class}, Confidence Score: {confidence_score:.2f}"
+                
+                 
 
-    return render_template("results.html", pclass=predicted_class, cscore=confidence_score)
+
+    return render_template("results.html", pclass=predicted_class, cscore=confidence_score,cscore_p=formatted_confidence_score)
+    
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+
 
 if __name__ == "__main__":
     app.run(port=8000, debug=True)
