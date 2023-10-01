@@ -126,7 +126,6 @@ nav a:hover {
     vertical-align: middle;
 }
 
-
 .page-container {
     display: flex;
     flex-direction: column;
@@ -136,6 +135,12 @@ nav a:hover {
 
 .image-container {
     position: absolute;
-            bottom: 10px; 
-            right: 10px; 
+    bottom: 10px;
+    right: 10px;
+}
+
+.video-feed {
+    height: 80%; /* Set your desired height */
+    position: relative;
+    overflow: hidden;
 }
