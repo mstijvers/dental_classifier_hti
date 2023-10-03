@@ -7,7 +7,7 @@ class VideoCamera(object):
         self.shape_predictor = dlib.shape_predictor('./static/shape_predictor_68_face_landmarks.dat')
         self.prev_bbox = None
         self.stable_count = 0
-        self.stable_duration = 4
+        self.stable_duration = 10
         self.show_cropped_mouth = False  # Flag to control when to show the cropped_mouth.jpg
     def __del__(self):
         self.video.release()
@@ -18,8 +18,10 @@ class VideoCamera(object):
             frame = cv2.imread('static/images/cropped_mouth.jpg')
         else:
             ret, frame = self.video.read()
+            frame = cv2.flip(frame, 1)  # 1 for horizontal flip
             gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             faces = self.face_detector(gray)
+
 
             for face in faces:
                 landmarks = self.shape_predictor(gray, face)
@@ -39,6 +41,12 @@ class VideoCamera(object):
                 if max_x - min_x >= 224 and max_y - min_y >= 224:
                     # Draw the bounding box around the mouth
                     cv2.rectangle(frame, (min_x, min_y), (max_x, max_y), (255, 255, 255), 2)
+                    progress = min(1.0, self.stable_count / self.stable_duration)
+
+                    # Draw a progress bar around the teeth
+                    bar_width = int((max_x - min_x) * progress)
+                    cv2.rectangle(frame, (min_x, min_y-20), (min_x + bar_width, min_y-10), (255, 255, 225 ),
+                                  -1)  # Green progress bar
 
                     # Check if the bounding box is relatively stable for 5 seconds
                     if self.prev_bbox is None:
@@ -73,6 +81,8 @@ class VideoCamera(object):
                 return None
 
         ret, jpeg = cv2.imencode('.jpg', frame)
+        # Mirror the frame horizontally
+
 
         return jpeg.tobytes()
 
