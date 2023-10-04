@@ -17,34 +17,40 @@
     </div>
     <div>
         <nav>
-            <a href="#">Home</a>
-            <a href="#">My Teeth</a>
+            <a href="http://127.0.0.1:8000">Home</a>
+            <a href="http://127.0.0.1:8000/classify">My Teeth</a>
             <a href="#">Dental Care</a>
-            <a href="#">About this AI</a>
+            <a href="http://127.0.0.1:8000/about">About this AI</a>
         </nav>
     </div>
 
 
     <form class="grid" action="/classify" method="POST" enctype="multipart/form-data">
         <div class="content-container">
-            <div class="image-upload"  >
-                <input type="file" id="file-upload" name="image" accept="image/*" required>
-                <label for="file-upload">
-                    Upload an image
-                </label>
+            <div class="uploaded-image">
+                <img id="uploaded-img" src="../static/img/teeth_result.png" alt="Uploaded Image">
             </div>
             <div class="analysis">
                 <h1>
-                    <div>
-                        {{ pclass }}
-                        {{ cscore }}
+                    <div class="result-container">
+                         <div class="cscore">
+                            {{ cscore_p }}
+                         </div>
+                         <div class="small-text">
+                            sure it's {{ pclass }}
+                         </div>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: {{ cscore_p }}"></div>
                     </div>
                 </h1>
-                <button type="submit" id="analyze-button" disabled>Analyze</button>
+                <button type="button" id="tips-button">Tips</button>
+                <button type="button" id="my-teeth-button">My Teeth</button>
             </div>
         </div>
     </form>
-
+    
+    
 
 </div>
 </body>
