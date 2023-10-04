@@ -27,23 +27,19 @@
     <div class="image-container">
         <img src="../static/img/toothbrush-guy.png" alt="Toothbrush Guy">
     </div>
-    
-    
+
     <form class="grid" action="/classify" method="POST" enctype="multipart/form-data">
-        <div class="content-container">
-            <div class="image-upload"  >
-                <input type="file" id="file-upload" name="image" accept="image/*" required>
-                <label for="file-upload">
-                    Upload an image
-                </label>
-            </div>
-            <div class="analysis">
-                <h1>Make a smile, so I can help!</h1>
-                <button type="submit" id="analyze-button" disabled>Analyze</button>
-            </div>
+    <div class="content-container">
+        <div class="video-feed">
+            <img class="container" src="{{ url_for('video_feed') }}" />
         </div>
-    </form>
-    
+        <div class="analysis">
+            <h1>Make a smile, so I can help!</h1>
+            <button type="submit" id="analyze-button">Analyze</button>
+            <button type="reset" id="redo-cam-button">Redo Image</button>
+        </div>
+    </div>
+</form>
   
 
 </div>
@@ -60,6 +56,23 @@
             analyzeButton.disabled = true;
         }
     });
+</script>
+
+<script>
+    // Function to send a POST request to reset the camera view
+        function resetCamera() {
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/reset_camera', true);
+            xhr.send();
+        }
+    // Periodically reload the video feed to check for changes
+    setInterval(function() {
+        document.getElementById('video_feed').src = "{{ url_for('video_feed') }}";
+    }, 1000);
+
+        // Add click event listener to the "Redo Camera" button
+        document.getElementById('redo-cam-button').addEventListener('click', resetCamera);
+    {#document.getElementById('analyze-button').addEventListener('click', );#}
 </script>
 
 </body>

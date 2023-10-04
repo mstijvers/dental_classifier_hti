@@ -51,6 +51,7 @@ nav a:hover {
     padding: 20px;
     height:45%;
     vertical-align: middle;
+    overflow: hidden;
 }
 
 .text-container {
@@ -140,7 +141,6 @@ nav a:hover {
     vertical-align: middle;
 }
 
-
 .page-container {
     display: flex;
     flex-direction: column;
@@ -150,9 +150,35 @@ nav a:hover {
 
 .image-container {
     position: absolute;
-            bottom: 10px; 
-            right: 10px; 
+    bottom: 10px;
+    right: 10px;
 }
+
+.video-feed {
+    height: 300px; /* Set your desired height */
+    position: relative;
+    overflow: hidden;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+}
+
+ .container {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+    justify-content: center;
+    align-self: center;
+    vertical-align: middle;
+    border-radius: 15px; /* Rounded corners */
+    border: 6px solid #640808; /* Border line */
+ }
+
+ .img{
+     max-width: 100%;
+     max-height: 100%;
+     object-fit: contain;
+ }
+
 
 .small-text {
     font-size: 30px; 
@@ -181,3 +207,4 @@ nav a:hover {
     background-color: #B7D7DE; 
     transition: width 0.3s ease; 
 }
+
