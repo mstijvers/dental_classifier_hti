@@ -8,19 +8,42 @@ from tanden import SimpleCNN
 from camera import VideoCamera
 import cv2
 import dlib
+import math
+import json
 
 app = Flask(__name__, template_folder="templates")
 
 # video stream
 video_stream = VideoCamera()
 
-# load model
-num_classes = 5  # Assuming 5 classes
+# Load the class labels
+with open('class_labels.json', 'r') as f:
+    class_labels = json.load(f)
+
+# Create an instance of the model with the same architecture as in code 1
+num_classes = len(class_labels)  # Adjust the number of classes to match your dataset
 model = SimpleCNN(num_classes)
 
-checkpoint_path = "dental_classifier.pth"  # Replace with the actual path
-model.load_state_dict(torch.load(checkpoint_path))
-model.eval()  # Set the model to evaluation mode
+# Load the pre-trained weights into the model
+model.load_state_dict(torch.load('with_healthyteeth_model.pth'))
+
+# Set the model to evaluation mode
+model.eval()
+
+# load model
+#num_classes = 6  # Assuming 6 classes, added healthy teeth
+#model = SimpleCNN(num_classes)
+
+# Save the model weights
+#torch.save(model.state_dict(), 'new_dental_classifier.pth')
+
+#checkpoint_path = "new_dental_classifier.pth"  # Replace with the actual path
+#model.load_state_dict(torch.load(checkpoint_path))
+
+# Modify the output layer to match the new number of classes (6 in this case)
+#model.fc2 = nn.Linear(128, num_classes)  # Replace 128 with the appropriate input size
+
+#model.eval()  # Set the model to evaluation mode
 
 # Define a transformation for preprocessing the uploaded image
 transform = transforms.Compose([
@@ -61,12 +84,18 @@ def reset_camera():
     return render_template("index.html")
 
 
+# definet the varibles in the beginning
+result = None
+formatted_confidence_score = None
+predicted_class = None
+confidence_score = None
+
 # classify image
 @app.route("/classify", methods=["POST"])
 def classify():
-    result = None
-    image_path = "static/images/cropped_mouth.jpg"  # Path to the cropped_mouth.jpg image
+    global result, formatted_confidence_score, predicted_class, confidence_score
 
+    image_path = "static/images/cropped_mouth.jpg"  # Path to the cropped_mouth.jpg image
 
     if os.path.isfile(image_path):
         # Preprocess the image
@@ -82,9 +111,20 @@ def classify():
         # Apply softmax to obtain class probabilities
         softmax = nn.Softmax(dim=1)
         probabilities = softmax(output)
-        class_labels = ["gingivitis", "hypodontia", "discoloration", "caries", "calculus"]
+        class_labels = ["gingivitis", "hypodontia", "discoloration", "caries", "calculus", "healtyteeth"]
+        label_mapping = {label: idx for idx, label in enumerate(class_labels)}
+
         predicted_class = class_labels[torch.argmax(probabilities)]
         confidence_score = torch.max(probabilities).item()
+
+        # Check if confidence_score is a valid number
+        if confidence_score is not None and not math.isnan(confidence_score):
+            # Convert confidence_score to a percentage
+            confidence_score_percentage = confidence_score * 100
+            formatted_confidence_score = f"{confidence_score_percentage:.0f}%"
+        else:
+            # Handle the case where confidence_score is not a valid number
+            formatted_confidence_score = "N/A"
 
         # Prepare the result message
         result = f"Predicted Class: {predicted_class}, Confidence Score: {confidence_score:.2f}"
@@ -110,27 +150,27 @@ def classify():
                 # Apply softmax to obtain class probabilities
                 softmax = nn.Softmax(dim=1)
                 probabilities = softmax(output)
-                class_labels = ["gingivitis", "hypodontia", "discoloration", "caries", "calculus"]
+                class_labels = ["gingivitis", "hypodontia", "discoloration", "caries", "calculus", "healtyteeth"]
                 predicted_class = class_labels[torch.argmax(probabilities)]
                 confidence_score = torch.max(probabilities).item()
-                
-                # Convert confidence_score to a percentage
-                confidence_score_percentage = confidence_score * 100
-                formatted_confidence_score = f"{confidence_score_percentage:.0f}%"
+
+                # Check if confidence_score is a valid number
+                if confidence_score is not None and not math.isnan(confidence_score):
+                    # Convert confidence_score to a percentage
+                    confidence_score_percentage = confidence_score * 100
+                    formatted_confidence_score = f"{confidence_score_percentage:.0f}%"
+                else:
+                    # Handle the case where confidence_score is not a valid number
+                    formatted_confidence_score = "N/A"
 
                 # Prepare the result message
                 result = f"Predicted Class: {predicted_class}, Confidence Score: {confidence_score:.2f}"
-                
-                 
 
-
-    return render_template("results.html", pclass=predicted_class, cscore=confidence_score,cscore_p=formatted_confidence_score)
+    return render_template("results.html", pclass=predicted_class, cscore=confidence_score, cscore_p=formatted_confidence_score)
     
 @app.route('/about')
 def about():
     return render_template('about.html')
-
-
 
 
 
