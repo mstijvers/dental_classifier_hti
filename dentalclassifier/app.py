@@ -86,8 +86,10 @@ def classify():
         predicted_class = class_labels[torch.argmax(probabilities)]
         confidence_score = torch.max(probabilities).item()
 
+
         # Prepare the result message
         result = f"Predicted Class: {predicted_class}, Confidence Score: {confidence_score:.2f}"
+
 
     if request.method == "POST":
         if "image" in request.files:
@@ -121,15 +123,12 @@ def classify():
                 # Prepare the result message
                 result = f"Predicted Class: {predicted_class}, Confidence Score: {confidence_score:.2f}"
                 
-                 
-
-
+                
     return render_template("results.html", pclass=predicted_class, cscore=confidence_score,cscore_p=formatted_confidence_score)
     
 @app.route('/about')
 def about():
     return render_template('about.html')
-
 
 
 
