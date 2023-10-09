@@ -117,6 +117,7 @@ def classify():
         predicted_class = class_labels[torch.argmax(probabilities)]
         confidence_score = torch.max(probabilities).item()
 
+
         # Check if confidence_score is a valid number
         if confidence_score is not None and not math.isnan(confidence_score):
             # Convert confidence_score to a percentage
@@ -126,8 +127,10 @@ def classify():
             # Handle the case where confidence_score is not a valid number
             formatted_confidence_score = "N/A"
 
+
         # Prepare the result message
         result = f"Predicted Class: {predicted_class}, Confidence Score: {confidence_score:.2f}"
+
 
     if request.method == "POST":
         if "image" in request.files:
@@ -166,7 +169,13 @@ def classify():
                 # Prepare the result message
                 result = f"Predicted Class: {predicted_class}, Confidence Score: {confidence_score:.2f}"
 
+
     return render_template("results.html", pclass=predicted_class, cscore=confidence_score, cscore_p=formatted_confidence_score)
+
+                
+                
+    return render_template("results.html", pclass=predicted_class, cscore=confidence_score,cscore_p=formatted_confidence_score)
+
     
 @app.route('/about')
 def about():
