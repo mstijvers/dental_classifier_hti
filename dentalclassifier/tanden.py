@@ -27,4 +27,3 @@ class SimpleCNN(nn.Module):
         x = self.relu3(x)
         x = self.fc2(x)
         return x
-
