@@ -162,3 +162,4 @@ venv/
 dentalclassifier/Dentaldata/
 .DS_Store
 detalclassifier/static/images/
+_MACOSX/
