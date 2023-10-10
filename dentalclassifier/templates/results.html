@@ -31,7 +31,6 @@
 
             <div class="uploaded-image">
                 <form action="/classify" method="POST" enctype="multipart/form-data">
-{#                //This should be an image based on the classified class#}
                 <img id = "classification-image" src="../static/img/teeth_result.png" >
                 </form>
             </div>
@@ -51,21 +50,19 @@
                         <div class="progress-bar" style="width: {{ cscore_p }}"></div>
                     </div>
                 </h1>
-{#                // This should be an text based on the classified class#}
                     <p id = "classification-text"> </p>
-
                 </form>
                 <div>
-                    <button id="tips-button">Tips</button>
-                    <button id="my-teeth-button">My Teeth</button>
-                    <button type="button" id="example-teeth">extreme examples</button
+                    <button  class="button" id="tips-button">Tips</button>
+                    <button  class="button" id="my-teeth-button">My Teeth</button>
+                    <button  class="button" id="example-teeth">extreme examples</button
                 </div>
             </div>
         </div>
 </div>
 
-<!-- The Modal -->
-<div id="openModal" class="modal">
+<!-- The Tips Modal -->
+<div id="tipsModal" class="modal">
 
   <!-- Modal content -->
   <div class="modal-content">
@@ -77,13 +74,37 @@
 
 </div>
 
+<!-- The Teeth Modal -->
+<div id="teethModal" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+      <img src="../cropped_mouth.jpg" >
+  </div>
+</div>
+
+<!-- The Examples Modal -->
+<div id="tipsModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+      <form action="/classify" method="POST" enctype="multipart/form-data">
+            <img id = image_example1 src="../cropped_mouth.jpg" >
+            <img id = image_example2 src="../cropped_mouth.jpg" >
+      </form>
+  </div>
+
+</div>
+
+
+
+
 <script>
     function updateContent(pclass) {
         var classificationText = document.getElementById("classification-text");
         var tipsText = document.getElementById("tips-text");
         var classificationImage = document.getElementById("classification-image");
-        var myTeethButton = document.getElementById("my-teeth-button");
-        var exampleTeethButton = document.getElementById("example-teeth");
 
         switch (pclass) {
             case "gingivitis":
@@ -130,30 +151,35 @@
 
 
 <script>
-// Get the modal
-var modal = document.getElementById("openModal");
+    // Get DOM Elements
+const modals = document.querySelectorAll(".modal");
+const modalBtns = document.querySelectorAll(".button");
+const closeBtns = document.querySelectorAll(".close");
 
-// Get the button that opens the modal
-var btn = document.getElementById("tips-button");
+// Events
+modalBtns.forEach((btn, index) =>
+  btn.addEventListener("click", () => openModal(index))
+);
+closeBtns.forEach((btn, index) =>
+  btn.addEventListener("click", () => closeModal(index))
+);
+// for closing when you click outside
+modals.forEach((modal, index) =>
+  modal.addEventListener("click", (e) => {
+   if(e.target === e.currentTarget){
+     closeModal(index);
+   }
+})
+);
 
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
-
-// When the user clicks the button, open the modal
-btn.onclick = function() {
-  modal.style.display = "block";
+// Open
+function openModal(index) {
+  modals[index].style.display = "block";
 }
 
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-  modal.style.display = "none";
-}
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
+// Close
+function closeModal(index) {
+  modals[index].style.display = "none";
 }
 </script>
 </body>
