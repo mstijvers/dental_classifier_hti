@@ -38,7 +38,7 @@ class VideoCamera(object):
                 min_y = min(mouth_landmarks, key=lambda x: x[1])[1]
                 max_y = max(mouth_landmarks, key=lambda x: x[1])[1]
 
-                if max_x - min_x >= 224 and max_y - min_y >= 224:
+                if max_x - min_x >= 150 and max_y - min_y >= 150:
                     # Draw the bounding box around the mouth
                     cv2.rectangle(frame, (min_x, min_y), (max_x, max_y), (255, 255, 255), 2)
                     progress = min(1.0, self.stable_count / self.stable_duration)
