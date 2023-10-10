@@ -116,7 +116,6 @@ def classify():
         # Prepare the result message
         result = f"Predicted Class: {predicted_class}, Confidence Score: {confidence_score:.2f}"
 
-
     # if request.method == "POST":
     #     if "image" in request.files:
     #         uploaded_image = request.files["image"]
@@ -161,6 +160,13 @@ def classify():
 def about():
     return render_template('about.html')
 
+@app.route('/home')
+def firsthome():
+    return render_template('home.html')
+
+@app.route('/dentalcare')
+def dentalcare():
+    return render_template('dentalcare.html')
 
 
 if __name__ == "__main__":
