@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="../static/style.css"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Gabarito">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Dental Website</title>
 </head>
@@ -18,19 +19,25 @@
     <div>
         <nav>
             <a href="http://127.0.0.1:8000">Home</a>
-            <a href="http://127.0.0.1:8000/classify">My Teeth</a>
+            <a href="http://127.0.0.1:8000">My Teeth</a>
             <a href="#">Dental Care</a>
             <a href="http://127.0.0.1:8000/about">About this AI</a>
         </nav>
     </div>
 
 
-    <form class="grid" action="/classify" method="POST" enctype="multipart/form-data">
+
         <div class="content-container">
+
             <div class="uploaded-image">
-                <img id="uploaded-img" src="../static/img/teeth_result.png" alt="Uploaded Image">
+                <form action="/classify" method="POST" enctype="multipart/form-data">
+{#                //This should be an image based on the classified class#}
+                <img id = "classification-image" src="../static/img/teeth_result.png" >
+                </form>
             </div>
+
             <div class="analysis">
+                <form action="/classify" method="POST" enctype="multipart/form-data">
                 <h1>
                     <div class="result-container">
                          <div class="cscore">
@@ -44,14 +51,110 @@
                         <div class="progress-bar" style="width: {{ cscore_p }}"></div>
                     </div>
                 </h1>
-                <button type="button" id="tips-button">Tips</button>
-                <button type="button" id="my-teeth-button">My Teeth</button>
+{#                // This should be an text based on the classified class#}
+                    <p id = "classification-text"> </p>
+
+                </form>
+                <div>
+                    <button id="tips-button">Tips</button>
+                    <button id="my-teeth-button">My Teeth</button>
+                    <button type="button" id="example-teeth">extreme examples</button
+                </div>
             </div>
         </div>
-    </form>
-    
-    
+</div>
+
+<!-- The Modal -->
+<div id="openModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+      <form action="/classify" method="POST" enctype="multipart/form-data">
+            <p id = "tips-text"> </p>
+      </form>
+  </div>
 
 </div>
+
+<script>
+    function updateContent(pclass) {
+        var classificationText = document.getElementById("classification-text");
+        var tipsText = document.getElementById("tips-text");
+        var classificationImage = document.getElementById("classification-image");
+        var myTeethButton = document.getElementById("my-teeth-button");
+        var exampleTeethButton = document.getElementById("example-teeth");
+
+        switch (pclass) {
+            case "gingivitis":
+                classificationText.textContent = "This is an example for gingivitis.";
+                tipsText.textContent = "tips for gingivitis.";
+                classificationImage.src="../static/img/gingivitis.png";
+                break;
+            case "hypodontia":
+                classificationText.textContent = "This is an example for hypodontia.";
+                tipsText.textContent = "tips for hypodontia.";
+                classificationImage.src="../static/img/hypodontia.png";
+                break;
+            case "discoloration":
+                classificationText.textContent = "This is an example for discoloration.";
+                tipsText.textContent = "tips for discoloration.";
+                classificationImage.src="../static/img/discoloration.png";
+                break;
+            case "caries":
+                classificationText.textContent = "This is an example for caries.";
+                tipsText.textContent = "tips for caries";
+                classificationImage.src="../static/img/caries.png";
+                break;
+            case "calculus":
+                classificationText.textContent = "This is an example for calculus.";
+                tipsText.textContent = "tips for calculus";
+                classificationImage.src="../static/img/calculus.png";
+                break;
+            case "healtyteeth":
+                classificationText.textContent = "This is an example for healthy teeth.";
+                tipsText.textContent = "tips for keeping healthy teeth";
+                classificationImage.src="../static/img/healthy.png";
+                break;
+            default:
+                classificationText.textContent = "No specific content available for this class.";
+        }
+
+        // Add functionality to your buttons here if needed
+    }
+
+    // Call the updateContent function with the initial pclass value
+    var initialPclass = "{{ pclass }}";
+    updateContent(initialPclass);
+</script>
+
+
+<script>
+// Get the modal
+var modal = document.getElementById("openModal");
+
+// Get the button that opens the modal
+var btn = document.getElementById("tips-button");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+</script>
 </body>
 </html>
