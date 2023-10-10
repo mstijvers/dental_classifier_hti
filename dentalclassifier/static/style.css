@@ -288,3 +288,9 @@ nav a:hover {
   text-decoration: none;
   cursor: pointer;
 }
+
+.myteeth{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}

@@ -79,7 +79,9 @@
   <!-- Modal content -->
   <div class="modal-content">
     <span class="close">&times;</span>
-      <img src="../cropped_mouth.jpg" >
+      <div class="myteeth">
+          <img src="static/images/cropped_mouth.jpg" >
+      </div>
   </div>
 </div>
 
@@ -98,44 +100,57 @@
 </div>
 
 
-
-
 <script>
     function updateContent(pclass) {
         var classificationText = document.getElementById("classification-text");
         var tipsText = document.getElementById("tips-text");
         var classificationImage = document.getElementById("classification-image");
+        var exampleImg1 = document.getElementById("image_example1");
+        var exampleImg2 = document.getElementById("image_example2");
 
+        <!-- HERE SHOULD BE THE APPROPRIATE TEXT/IMAGES FOR EVERY CONDITION!-->
         switch (pclass) {
             case "gingivitis":
                 classificationText.textContent = "This is an example for gingivitis.";
                 tipsText.textContent = "tips for gingivitis.";
                 classificationImage.src="../static/img/gingivitis.png";
+                exampleImg1.src="../Dentaldata/gingivitis/(1).jpg";
+                exampleImg2.src="../Dentaldata/gingivitis/(2).jpg";
                 break;
             case "hypodontia":
                 classificationText.textContent = "This is an example for hypodontia.";
                 tipsText.textContent = "tips for hypodontia.";
                 classificationImage.src="../static/img/hypodontia.png";
+                exampleImg1.src="../Dentaldata/hypodontia/(1).jpg";
+                exampleImg2.src="../Dentaldata/hypodontia/(2).jpg";
                 break;
             case "discoloration":
                 classificationText.textContent = "This is an example for discoloration.";
                 tipsText.textContent = "tips for discoloration.";
                 classificationImage.src="../static/img/discoloration.png";
+                exampleImg1.src="../Dentaldata/discoloration/Tooth_Discoloration_0_1.jpg";
+                exampleImg2.src="../Dentaldata/discoloration/Tooth_Discoloration_0_2.jpg";
                 break;
             case "caries":
                 classificationText.textContent = "This is an example for caries.";
                 tipsText.textContent = "tips for caries";
                 classificationImage.src="../static/img/caries.png";
+                exampleImg1.src="../Dentaldata/caries/caries_0_7.jpg";
+                exampleImg2.src="../Dentaldata/caries/caries_0_17.jpg";
                 break;
             case "calculus":
                 classificationText.textContent = "This is an example for calculus.";
                 tipsText.textContent = "tips for calculus";
                 classificationImage.src="../static/img/calculus.png";
+                exampleImg1.src="../Dentaldata/calculus/(1).jpg";
+                exampleImg2.src="../Dentaldata/calculus/(2).jpg";
                 break;
             case "healtyteeth":
                 classificationText.textContent = "This is an example for healthy teeth.";
                 tipsText.textContent = "tips for keeping healthy teeth";
                 classificationImage.src="../static/img/healthy.png";
+                exampleImg1.src="../Dentaldata/healhtyteeth/1.jpg";
+                exampleImg2.src="../Dentaldata/healhtyteeth/2.jpg";
                 break;
             default:
                 classificationText.textContent = "No specific content available for this class.";
