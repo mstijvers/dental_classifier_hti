@@ -294,3 +294,15 @@ nav a:hover {
     margin-left: auto;
     margin-right: auto;
 }
+
+h1.comic-font {
+    color: #640808;
+    font-size: 3em; 
+    margin-bottom: 10px;
+}
+
+p.comic-font {
+    font-size: 2em; 
+    color: #232726;
+    margin-bottom: 20px;
+}
