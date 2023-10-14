@@ -10,52 +10,50 @@ from torch.utils.data import DataLoader, TensorDataset
 from torchvision import transforms
 import cv2
 
-# 定义类别标签
+# Define class labels
 class_labels = ["gingivitis", "hypodontia", "discoloration", "caries", "calculus", "healthyteeth"]
 
-# 创建空列表来存储图像和标签对
+# Create empty lists to store image and label pairs
 data = []
 labels = []
 
-# 数据文件夹的相对路径
+# Relative path to the data folder
 data_folder = "Dentaldata"
 
-# 修改加载图像的部分代码
+# Modify the code for loading images
 for class_label in class_labels:
     class_folder = os.path.join(data_folder, class_label)
     for filename in os.listdir(class_folder):
-        if filename.endswith(".jpg"):  # 假设图像文件都以 .jpg 结尾
+        if filename.endswith(".jpg"):  # Assuming image files end with .jpg
             img_path = os.path.join(class_folder, filename)
             try:
-                with Image.open(img_path) as img:  # 使用 with 语句加载图像
+                with Image.open(img_path) as img:  # Use the with statement to load the image
                     if img is not None and len(np.array(img).shape) == 3:
                         data.append(img)
-                        labels.append(class_labels.index(class_label))  # 使用类别的索引作为标签
+                        labels.append(class_labels.index(class_label))  # Use the index of the class as the label
                         print(f"Loaded image: {img_path}, Label: {class_labels.index(class_label)}")
                     else:
                         print(f"Skipped invalid image: {img_path}")
             except Exception as e:
                 print(f"Error processing image {img_path}: {e}")
-                
 
-# 将数据转换为NumPy数组
+# Convert data to NumPy arrays
 data = np.array(data, dtype=object)
 labels = np.array(labels)
 
-# 添加以下代码来检查数据
+# Add the following code to check the data
 print(f"Total images: {len(data)}")
 print(f"Total labels: {len(labels)}")
 for class_label in class_labels:
     class_count = (labels == class_labels.index(class_label)).sum()
     print(f"Total images in class '{class_label}': {class_count}")
 
-# 划分数据集为训练集和测试集
+# Split the dataset into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(data, labels, test_size=0.2, random_state=42)
 
-# 创建模型
-num_classes = 6  # 假设有6个类别
+# Create the model
+num_classes = 6  # Assuming there are 6 classes
 model = SimpleCNN(num_classes)
-
 
 # Modify the transformation to handle RGBA images by converting them to RGB
 transform = transforms.Compose([
@@ -74,21 +72,19 @@ X_test_pil = [Image.fromarray(np.array(image)) for image in X_test]
 X_test_tensor = torch.stack([transform(image) for image in X_test_pil])
 
 # Create data loaders for both the training and testing datasets
+batch_size = 32
 train_dataset = TensorDataset(X_train_tensor, torch.tensor(y_train))
 test_dataset = TensorDataset(X_test_tensor, torch.tensor(y_test))
-
-batch_size = 32
 train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
 test_loader = DataLoader(test_dataset, batch_size=batch_size)
 
-
-# 定义损失函数和优化器
+# Define the loss function and optimizer
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=0.001)
 
-# 训练模型
-num_epochs = 5  # 根据需要选择训练周期数
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+# Train the model
+num_epochs = 5  # Choose the number of training epochs as needed
+device = torch.device("cuda" if torch.cuda.is available() else "cpu")
 model.to(device)
 
 for epoch in range(num_epochs):
@@ -106,18 +102,18 @@ for epoch in range(num_epochs):
         
         running_loss += loss.item()
     
-    # 打印每个周期的损失
+    # Print the loss for each epoch
     print(f"Epoch {epoch + 1}/{num_epochs}, Loss: {running_loss / len(train_loader)}")
 
-# 保存模型的权重和结构
+# Save the model's weights and structure
 torch.save(model.state_dict(), 'with_healthyteeth_model.pth')
 
-# 保存类别标签映射，以便在推理时使用
+# Save the class label mapping for use during inference
 import json
 with open('class_labels.json', 'w') as f:
     json.dump(class_labels, f)
 
-# 在测试集上评估模型
+# Evaluate the model on the test set
 model.eval()
 correct = 0
 total = 0
@@ -132,3 +128,4 @@ with torch.no_grad():
 
 accuracy = correct / total
 print(f"Test Accuracy: {accuracy * 100:.2f}%")
+
