@@ -55,14 +55,7 @@ nav a:hover {
     padding-top: 50px;
 }
 
-.text-container {
-    width: 70%; 
-    margin: 0 auto; 
-    text-align: center; 
-    padding: 20px; 
-    box-sizing: border-box; 
-    color:#232726;
-}
+
 
 .text-container {
     width: 70%; 
@@ -71,7 +64,10 @@ nav a:hover {
     padding: 20px; 
     box-sizing: border-box; 
     color:#232726;
+    z-index: 2;
+    position: relative;
 }
+
 
 
 .text-container img {
@@ -306,3 +302,68 @@ p.comic-font {
     color: #232726;
     margin-bottom: 20px;
 }
+
+
+
+body.custom-background {
+    margin: 0;
+    padding: 0;
+    font-family: Gabarito, sans-serif;
+    display: flex;
+    background-image: url("../static/img/pexels-fauxels-3182812.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    min-height: 100%;
+}
+
+body.custom-background::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+
+
+body.custom-background nav {
+    background-color: rgba(59, 62, 63, 0);
+    padding: 10px 0;
+    text-align: center;
+    margin:auto;
+    width: 70%;
+    border-bottom: 2px solid #640808;
+    position: relative; 
+    z-index: 1; 
+    display: none; 
+}
+
+body.custom-background:hover nav {
+    display: block; 
+    }
+
+
+body.custom-background .text-container {
+    position: relative; 
+    z-index: 1;
+}
+
+
+#check-button {
+    background-color: #640808;
+    color: white; 
+    padding: 10px 40px; 
+    border: none; 
+    cursor: pointer; 
+    font-family: Gabarito, sans-serif;
+    border-radius: 25px; 
+}
+
+#check-button:hover {
+    background-color: #861A31; 
+}
+
