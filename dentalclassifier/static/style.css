@@ -292,13 +292,16 @@ nav a:hover {
 }
 
 h1.comic-font {
-    color: #640808;
+    font-family: "Comic Sans MS", cursive;
+    color: #B7D7DE;
     font-size: 3em; 
     margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 p.comic-font {
-    font-size: 2em; 
+    font-family: "Comic Sans MS", cursive;
+    font-size: 1.5em; 
     color: #232726;
     margin-bottom: 20px;
 }
@@ -328,19 +331,23 @@ body.custom-background::before {
     background-color: rgba(255, 255, 255, 0.5);
 }
 
-
+header.logo {
+    z-index: 2; 
+   
+}
 
 body.custom-background nav {
     background-color: rgba(59, 62, 63, 0);
     padding: 10px 0;
     text-align: center;
-    margin:auto;
+    margin: auto;
     width: 70%;
     border-bottom: 2px solid #640808;
-    position: relative; 
-    z-index: 1; 
-    display: none; 
+    position: relative;
+    z-index: 1;
+    display: none;
 }
+
 
 body.custom-background:hover nav {
     display: block; 
@@ -366,4 +373,8 @@ body.custom-background .text-container {
 #check-button:hover {
     background-color: #861A31; 
 }
+
+
+
+
 
