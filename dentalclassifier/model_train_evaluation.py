@@ -84,7 +84,7 @@ criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=0.001)
 
 # Train the model
-num_epochs = 10  # Choose the number of training epochs as needed
+num_epochs = 20  # Choose the number of training epochs as needed
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model.to(device)
 
@@ -108,7 +108,7 @@ for epoch in range(num_epochs):
     print(f"Epoch {epoch + 1}/{num_epochs}, Loss: {running_loss / len(train_loader)}")
 
 # Save the model's weights and structure
-torch.save(model.state_dict(), 'with_healthyteeth_model_10epochs.pth')
+torch.save(model.state_dict(), 'with_healthyteeth_model_20epochs.pth')
 
 # Save the class label mapping for use during inference
 import json
@@ -132,17 +132,16 @@ with torch.no_grad():
         predictions.extend(predicted.cpu().numpy())
         true_labels.extend(labels.cpu().numpy())
 
-# 计算混淆矩阵
 cm = confusion_matrix(true_labels, predictions)
 
-# 计算准确率、错误率、召回率和精确度
+
 accuracy = accuracy_score(true_labels, predictions)
 error_rate = 1 - accuracy
 recall = recall_score(true_labels, predictions, average='weighted')
 precision = precision_score(true_labels, predictions, average='weighted')
 
-# 计算模型损失
-criterion = nn.CrossEntropyLoss()  # 适用于分类任务
+
+criterion = nn.CrossEntropyLoss() 
 total_loss = 0.0
 
 with torch.no_grad():
@@ -154,7 +153,7 @@ with torch.no_grad():
 
 average_loss = total_loss / len(test_loader)
 
-# 打印性能指标
+
 print("Confusion Matrix:")
 print(cm)
 print(f"Error Rate: {error_rate * 100:.2f}%")
