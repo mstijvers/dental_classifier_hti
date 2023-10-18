@@ -2,33 +2,108 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="../static/style.css"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Gabarito">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Dental Website</title>
+    <style>
+        #check-button {
+            background-color: #640808;
+            color: white;
+            padding: 10px 40px;
+            border: none;
+            cursor: pointer;
+            font-family: Gabarito, sans-serif;
+            border-radius: 25px;
+        }
+
+        #check-button:hover {
+            background-color: #861A31;
+        }
+
+        nav {
+            background-color: rgba(59, 62, 63, 0);
+            padding: 10px 0;
+            text-align: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 70%;
+            margin: auto;
+            border-bottom: 2px solid #640808;
+            font-family: Gabarito, sans-serif;
+            z-index: 1;
+            display: none; 
+        }
+
+        nav:hover {
+            display: block; 
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #abdcd8;
+            margin: 0 20px; 
+            font-weight: bold;
+        }
+
+        .logo {
+            text-align: center;
+            position: relative;
+            top: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .image-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .image-container img {
+            width: 50px; 
+            margin: 0 10px; 
+            opacity: 0;
+        }
+    </style>
 </head>
-<body>
-<div style=width:100%;>
-    <div>
-        <header>
-            <img src="../static/img/clip-path-group.png" alt="Logo">
-        </header>
+<body style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; margin: 0;">
+    <div class="logo">
+        <img src="../static/img/logo.png" alt="Logo" style="transform: scale(1.2);">
+        <p style="font-family: 'Comic Sans MS', cursive; font-size: 1.5em; color: #232726;">Your personal AI dentist</p>
+        <a href="http://127.0.0.1:8000" target="_blank">
+            <button type="submit" id="check-button">Check My Teeth</button>
+        </a>
+        <div class="image-container">
+            <img src="../static/img/avatar/content.svg" alt="Image 1">
+            <img src="../static/img/avatar/happy.svg" alt="Image 2">
+            <img src="../static/img/avatar/inpain.svg" alt="Image 3">
+            <img src="../static/img/avatar/inshock.svg" alt="Image 4">
+            <img src="../static/img/avatar/sad.svg" alt="Image 5">
+            <img src="../static/img/avatar/suprised.svg" alt="Image 6">
+            <img src="../static/img/82yjcp.gif" alt="Image 7">
+        </div>
     </div>
-    <div>
-        <nav>
-           <a href="http://127.0.0.1:8000/home">Home</a>
-            <a href="http://127.0.0.1:8000">My Teeth</a>
-            <a href="http://127.0.0.1:8000/dentalcare">Dental Care</a>
-            <a href="http://127.0.0.1:8000/about">About this AI</a>
-        </nav>
-    </div>
-
-    <div class="text-container">
-		<h1>AN AWESOME HOMEPAGE</h1>
-    </div>
-
-</div>
-
-
+    <nav>
+        <a href="http://127.0.0.1:8000/home">Home</a>
+        <a href="http://127.0.0.1:8000">My Teeth</a>
+        <a href="http://127.0.0.1:8000/dentalcare">Dental Care</a>
+        <a href="http://127.0.0.1:8000/about">About this AI</a>
+    </nav>
+    <script>
+        const images = document.querySelectorAll('.image-container img');
+        images.forEach((image, index) => {
+            setTimeout(() => {
+                image.style.opacity = 1;
+            }, 500 * index); 
+        });
+    </script>
 </body>
 </html>
+
+

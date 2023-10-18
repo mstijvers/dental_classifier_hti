@@ -8,6 +8,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Dental Website</title>
+
 </head>
 <body>
 <div style=width:100%;>
@@ -25,13 +26,11 @@
         </nav>
     </div>
 
-
-
         <div class="content-container">
 
             <div class="uploaded-image">
                 <form action="/classify" method="POST" enctype="multipart/form-data">
-                <img id = "classification-image" src="../static/img/teeth_result.png" >
+                <img style = "max-width:70%; width: auto; height: auto;" id = "classification-image" src="../static/img/teeth_result.png" >
                 </form>
             </div>
 
@@ -59,6 +58,19 @@
                 </div>
             </div>
         </div>
+        
+        <img id="bottom-right-image" src="/static/img/avatar/content.svg" style="width: 8%; height: 8%;">
+        <img id="confused-image" src="/static/img/avatar/confused.svg" style="width: 8%; height: 8%; display: none;">
+        
+        <script>
+        var cscore_p = 60; // 
+
+        if (cscore_p > 50) {
+            document.getElementById("bottom-right-image").style.display = "block";
+        } else {
+            document.getElementById("confused-image").style.display = "block";
+        }
+    </script>
 </div>
 
 <!-- The Tips Modal -->
@@ -79,8 +91,9 @@
   <!-- Modal content -->
   <div class="modal-content">
     <span class="close">&times;</span>
-      <div class="myteeth">
-          <img src="static/images/cropped_mouth.jpg" >
+      <h2 style="color: #640808; text-align: center;"> How your teeth were analyzed</h2>
+      <div class="myteeth" style="align-content: center">
+          <img style="border-radius: 1em;" src="static/images/cropped_mouth.jpg" >
       </div>
   </div>
 </div>
@@ -91,12 +104,11 @@
   <!-- Modal content -->
   <div class="modal-content">
     <span class="close">&times;</span>
-      <form action="/classify" method="POST" enctype="multipart/form-data">
-            <img id = image_example1 src="../cropped_mouth.jpg" >
-            <img id = image_example2 src="../cropped_mouth.jpg" >
+      <form class = "myteeth" action="/classify" method="POST" enctype="multipart/form-data">
+            <img style="border-radius: 1em; margin-right: 1em;" id = image_example1 src="../cropped_mouth.jpg" >
+            <img style="border-radius: 1em;" id = image_example2 src="../cropped_mouth.jpg" >
       </form>
   </div>
-
 </div>
 
 
@@ -111,50 +123,99 @@
         <!-- HERE SHOULD BE THE APPROPRIATE TEXT/IMAGES FOR EVERY CONDITION!-->
         switch (pclass) {
             case "gingivitis":
-                classificationText.textContent = "This is an example for gingivitis.";
-                tipsText.textContent = "tips for gingivitis.";
-                classificationImage.src="../static/img/gingivitis.png";
-                exampleImg1.src="Dentaldata/gingivitis/(1).jpg";
-                exampleImg2.src="Dentaldata/gingivitis/(2).jpg";
+                classificationText.textContent = "Gingivitis is a common and mild form of gum disease (periodontal disease) that causes irritation, redness, and swelling (inflammation) of your gingiva, the part of your gum around the base of your teeth. Gingivitis can be managed and even reversed with proper oral care and hygiene.";
+                tipsText.textContent = "<h2  style='color: #640808; text-align: center;'>Tips for Gingivitis</h2>" +
+        "<ol>" +
+        "<li>Brush your teeth at least twice a day using fluoride toothpaste.</li>" +
+        "<li>ake it a daily habit to remove plaque and food particles from between your teeth.</li>" +
+        "<li>Rinse with an antimicrobial or antiseptic mouthwash recommended by your dentist to reduce plaque and bacteria.</li>" +
+        "<li>Visit your dentist for check-ups and cleanings to detect gingivitis early and get treatment.</li>" +
+        "<li>Consume fruits, vegetables, and whole grains while limiting sugary and starchy foods that contribute to plaque.</li>" +
+        "<li>Smoking and tobacco use increase the risk of gingivitis and other oral health problems.</li>" +
+        "</ol>";                
+                classificationImage.src="../static/img/animated_conditions/Gingivitis.png";
+                exampleImg1.src="../static/img/teeth/gingivitis/(1).jpg";
+                exampleImg2.src="../static/img/teeth/gingivitis/(5).jpg";
                 break;
             case "hypodontia":
-                classificationText.textContent = "This is an example for hypodontia.";
-                tipsText.textContent = "tips for hypodontia.";
-                classificationImage.src="../static/img/hypodontia.png";
-                exampleImg1.src="Dentaldata/hypodontia/(1).jpg";
-                exampleImg2.src="Dentaldata/hypodontia/(2).jpg";
+                classificationText.textContent = "Hypodontia is a condition characterized by the congenital absence of one or more teeth, typically the permanent ones. It can affect both primary and permanent teeth, and it often requires specialized dental care.";
+                tipsText.textContent = "<h2 style='color: #640808; text-align: center;'>Tips for Hypodontia</h2>" +
+        "<ol>" +
+        "<li>An orthodontic evaluation is essential to address issues related to spacing, alignment, and bite due to missing teeth. </li>" +
+        "<li>In cases where missing teeth need replacement, prosthodontic solutions like dental implants, bridges, or partial dentures can be considered. </li>" +
+        "<li>Rinse with an antimicrobial or antiseptic mouthwash recommended by your dentist to reduce plaque and bacteria.</li>" +
+        "<li>Maintain regular dental check-ups to monitor the condition and address any complications early.</li>" +
+        "<li> Good oral hygiene is crucial to prevent complications associated with hypodontia. </li>" +
+        "<li>Brush and floss regularly to keep your remaining teeth and dental appliances clean and healthy.</li>" +
+        "</ol>";  
+                classificationImage.src="../static/img/animated_conditions/Hypodontia.png";
+                exampleImg1.src="../static/img/teeth/hypodontia/(1).jpg";
+                exampleImg2.src="../static/img/teeth/hypodontia/(2).jpg";
                 break;
             case "discoloration":
-                classificationText.textContent = "This is an example for discoloration.";
-                tipsText.textContent = "tips for discoloration.";
-                classificationImage.src="../static/img/discoloration.png";
-                exampleImg1.src="Dentaldata/discoloration/Tooth_Discoloration_0_1.jpg";
-                exampleImg2.src="Dentaldata/discoloration/Tooth_Discoloration_0_2.jpg";
+                classificationText.textContent = "Discoloration of teeth can occur due to various factors, including staining from food and beverages, tobacco use, or underlying dental issues.";
+                tipsText.textContent = "<h2 style='color: #640808; text-align: center;'>Tips for Discoloration</h2>" +
+        "<ol>" +
+        "<li>Brush your teeth at least twice a day and floss daily to remove food particles and plaque.  </li>" +
+        "<li>Reduce the consumption of highly staining substances, such as coffee, tea, red wine, and dark-colored berries.  </li>" +
+        "<li> If you smoke or use tobacco products, consider quitting. Tobacco use is a leading cause of tooth discoloration.</li>" +
+        "<li>When drinking beverages that can stain teeth, such as soda or iced tea, using a straw can help minimize contact with your teeth.</li>" +
+        "<li> Good oral hygiene is crucial to prevent complications associated with hypodontia. </li>" +
+        "<li>Visit your dentist for regular check-ups and professional cleanings. Dental professionals can remove surface stains and detect any underlying issues early.</li>" +
+        "</ol>";  
+
+                classificationImage.src="../static/img/animated_conditions/Discoloration.png";
+                exampleImg1.src="../static/img/teeth/discoloration/Tooth_Discoloration_0_161.jpg";
+                exampleImg2.src="../static/img/teeth/discoloration/Tooth_Discoloration_0_165.jpg";
                 break;
             case "caries":
-                classificationText.textContent = "This is an example for caries.";
-                tipsText.textContent = "tips for caries";
-                classificationImage.src="../static/img/caries.png";
-                exampleImg1.src="Dentaldata/caries/caries_0_7.jpg";
-                exampleImg2.src="Dentaldata/caries/caries_0_17.jpg";
+                classificationText.textContent = "Caries, commonly referred to as dental cavities or tooth decay, is the deterioration of tooth structure caused by acids produced by bacteria in your mouth";
+                tipsText.textContent = "<h2 style='color: #640808; text-align: center;'>Tips for Caries"+
+        "<ol>" +
+        "<li>Brush your teeth at least twice a day using fluoride toothpaste and a soft-bristle toothbrush. Make sure to brush for two minutes each time.  </li>" +
+        "<li> Floss daily to remove food particles and plaque from between your teeth and along the gumline where your toothbrush may not reach.  </li>" +
+        "<li> Use fluoride toothpaste, and consider fluoride mouthwash or treatments recommended by your dentist. Fluoride helps strengthen tooth enamel.</li>" +
+        "<li>Consume a well-balanced diet with minimal sugary snacks and beverages. Limit sugary and acidic foods, as they can contribute to tooth decay.</li>" +
+        "<li> Good oral hygiene is crucial to prevent complications associated with hypodontia. </li>" +
+        "<li> Ask your dentist about dental sealants, which are protective coatings applied to the chewing surfaces of molars to prevent cavities.</li>" +
+        "</ol>";
+                classificationImage.src="../static/img/animated_conditions/Caries.png";
+                exampleImg1.src="../static/img/teeth/caries/caries_0_1182.jpg";
+                exampleImg2.src="../static/img/teeth/caries/caries_0_1184.jpg";
                 break;
             case "calculus":
-                classificationText.textContent = "This is an example for calculus.";
-                tipsText.textContent = "tips for calculus";
-                classificationImage.src="../static/img/calculus.png";
-                exampleImg1.src="Dentaldata/calculus/(1).jpg";
-                exampleImg2.src="Dentaldata/calculus/(2).jpg";
+                classificationText.textContent = "Calculus refers to a dental condition commonly known as tartar. Tartar is a hardened, calcified deposit that forms on the surface of teeth. This formation is a result of the mineralization of dental plaque, which is a soft, sticky film of bacteria and food particles that accumulates on your teeth.";
+                tipsText.textContent = "<h2 style='color: #640808; text-align: center;'>Tips for Calculus"+
+        "<ol>" +
+        "<li>Brush your teeth at least twice a day using fluoride toothpaste and a soft-bristle toothbrush. Pay attention to brushing all surfaces of your teeth and along the gumline.  </li>" +
+        "<li> Floss daily to remove plaque and food particles from between your teeth. Plaque buildup can lead to calculus formation.  </li>" +
+        "<li> Visit your dentist regularly for check-ups and professional cleanings. Dental professionals can remove calculus during cleanings, preventing its buildup.</li>" +
+        "<li>Consider using toothpaste specifically formulated for tartar control. These toothpastes may help slow down the formation of calculus.</li>" +
+        "<li> Good oral hygiene is crucial to prevent complications associated with hypodontia. </li>" +
+        "<li> Limit sugary and starchy foods in your diet, as these can contribute to plaque formation.</li>" +
+        "</ol>";
+                classificationImage.src="../static/img/animated_conditions/Calculus.png";
+                exampleImg1.src="../static/img/teeth/calculus/(48).jpg";
+                exampleImg2.src="../static/img/teeth/calculus/(50).jpg";
                 break;
             case "healtyteeth":
-                classificationText.textContent = "This is an example for healthy teeth.";
-                tipsText.textContent = "tips for keeping healthy teeth";
-                classificationImage.src="../static/img/healthy.png";
-                exampleImg1.src="dentalclassifier/Dentaldata/healthyteeth/1.jpg";
-                exampleImg2.src="dentalclassifier/Dentaldata/healthyteeth/2.jpg";
-                break;
-            default:
-                classificationText.textContent = "No specific content available for this class.";
-        }
+                classificationText.textContent = "Healthy teeth are teeth that are free from dental problems, cavities, gum disease, and other oral health issues. Healthy teeth are not only important for your overall well-being, but they also contribute to a confident smile.";
+                tipsText.innerHTML = "<h2 style='color: #640808; text-align: center;'>Tips for Healthy Teeth</h2>" +
+        "<ol>" +
+        "<li>Be thorough and gentle while brushing.</li>" +
+        "<li>Floss daily to remove plaque and food particles from between your teeth.</li>" +
+        "<li>Use a soft-bristle toothbrush and brush in circular motions.</li>" +
+        "<li>Avoid brushing too hard, as it can damage your gums and enamel.</li>" +
+        "<li>Limit the consumption of sugary snacks, beverages, and acidic foods.</li>" +
+        "<li>If you consume them, do so in moderation and rinse your mouth with water afterward.</li>" +
+        "</ol>";
+    classificationImage.src = "../static/img/animated_conditions/healthy.png";
+    exampleImg1.src = "../static/img/teeth/healthyteeth/22.jpg";
+    exampleImg2.src = "../static/img/teeth/healthyteeth/27.jpg";
+    break;
+default:
+    classificationText.textContent = "No specific content available for this class.";
+}
 
         // Add functionality to your buttons here if needed
     }
