@@ -104,7 +104,7 @@ predict_fn_lime = partial(predict_fn, transform_required=True)
 
 def overlay_explainability_layer(explanation):
     temp, mask = explanation.get_image_and_mask(visualized_class, positive_only=True, num_features=5, hide_rest=False)
-    plt.imsave("out.png", mark_boundaries(temp / 2 + 0.5, mask))
+    plt.imsave("out.png", mark_boundaries(temp / 2 + 0.5, mask, color=(0.5294117647058824, 0.09803921568627451, 0.19607843137254902)))
     
 
 
