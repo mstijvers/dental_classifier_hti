@@ -292,73 +292,6 @@ nav a:hover {
     justify-content: center;
 }
 
-h1.comic-font {
-    font-family: "Comic Sans MS", cursive;
-    color: #B7D7DE;
-    font-size: 3em; 
-    margin-bottom: 10px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-p.comic-font {
-    font-family: "Comic Sans MS", cursive;
-    font-size: 1.5em; 
-    color: #232726;
-    margin-bottom: 20px;
-}
-
-
-
-body.custom-background {
-    margin: 0;
-    padding: 0;
-    font-family: Gabarito, sans-serif;
-    display: flex;
-    background-image: url("../static/img/pexels-fauxels-3182812.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    position: relative;
-    min-height: 100%;
-}
-
-body.custom-background::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(255, 255, 255, 0.5);
-}
-
-header.logo {
-    z-index: 2; 
-   
-}
-
-body.custom-background nav {
-    background-color: rgba(59, 62, 63, 0);
-    padding: 10px 0;
-    text-align: center;
-    margin: auto;
-    width: 70%;
-    border-bottom: 2px solid #640808;
-    position: relative;
-    z-index: 1;
-    display: none;
-}
-
-
-body.custom-background:hover nav {
-    display: block; 
-    }
-
-
-body.custom-background .text-container {
-    position: relative; 
-    z-index: 1;
-}
 
 
 #check-button {
@@ -380,6 +313,5 @@ li {
     list-style-image: url("../static/img/avatar/luv.svg");
     margin-bottom: 5px;
 }
-
 
 
