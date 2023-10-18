@@ -2,9 +2,6 @@ from PIL import Image
 from functools import partial
 from lime import lime_image
 from skimage.segmentation import mark_boundaries
-image_path = "dentalclassifier/static/images/cropped_mouth.jpg"
-model_path = "dental_classifier.pth"
-img = Image.open(image_path)
 import matplotlib.pyplot as plt
 import numpy as np
 import numpy as np
@@ -12,7 +9,15 @@ from tanden import SimpleCNN
 import torch
 import torchvision.transforms as transforms
 import torch.nn as nn
+
+# what does this mean? @silke??
 visualized_class = 4
+
+
+image_path = "static/images/cropped_mouth.jpg"
+model_path = "../dental_classifier.pth"
+img = Image.open(image_path)
+org_width, org_height = img.size
 
 def fetch_model(model_path) -> nn.Module:
     """
@@ -104,8 +109,13 @@ predict_fn_lime = partial(predict_fn, transform_required=True)
 
 def overlay_explainability_layer(explanation):
     temp, mask = explanation.get_image_and_mask(visualized_class, positive_only=True, num_features=5, hide_rest=False)
-    plt.imsave("out.png", mark_boundaries(temp / 2 + 0.5, mask, color=(0.5294117647058824, 0.09803921568627451, 0.19607843137254902)))
-    
+    plt.imsave("static/images/analyzed_teeth.jpg", mark_boundaries(temp+ 0.3, mask, color=(0.5294117647058824, 0.09803921568627451, 0.19607843137254902)))
+    # Open the saved image
+    overlayed_image = Image.open("static/images/analyzed_teeth.jpg")
+    # Resize the overlayed image back to its original dimensions
+    overlayed_image = overlayed_image.resize((org_width, org_height))
+    # Save the resized overlayed image
+    overlayed_image.save("static/images/analyzed_teeth_resized.jpg")
 
 
 def main(img):
