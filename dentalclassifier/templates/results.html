@@ -59,9 +59,12 @@
             </div>
         </div>
         
-        <img id="bottom-right-image" src="/static/img/avatar/content.svg" style="width: 8%; height: 8%;">
-        <img id="confused-image" src="/static/img/avatar/confused.svg" style="width: 8%; height: 8%; display: none;">
-        
+{#    ? <img id="bottom-right-image" src="/static/img/avatar/content.svg" style="width: 8%; height: 8%;">#}
+{#        <img id="confused-image" src="/static/img/avatar/confused.svg" style="width: 8%; height: 8%; display: none;">#}
+        <form action="/classify" method="POST" enctype="multipart/form-data">
+                <img style = "width: 10%; height: 10%;" id = "avatar" src="/static/img/avatar/content.svg" >
+                <img style = "width: 5%; height: 5%;" id = "speak_bubble" src="/static/img/avatar/luv.svg" >
+                </form>
         <script>
         var cscore_p = 60; // 
 
@@ -93,7 +96,7 @@
     <span class="close">&times;</span>
       <h2 style="color: #640808; text-align: center;"> How your teeth were analyzed</h2>
       <div class="myteeth" style="align-content: center">
-          <img style="border-radius: 1em;" src="static/images/cropped_mouth.jpg" >
+          <img style="border-radius: 1em;" src="../static/images/analyzed_teeth_resized.jpg" >
       </div>
   </div>
 </div>
@@ -113,18 +116,20 @@
 
 
 <script>
-    function updateContent(pclass) {
+    function updateContent(pclass, cscore) {
         var classificationText = document.getElementById("classification-text");
         var tipsText = document.getElementById("tips-text");
         var classificationImage = document.getElementById("classification-image");
         var exampleImg1 = document.getElementById("image_example1");
         var exampleImg2 = document.getElementById("image_example2");
+        var avatar = document.getElementById("avatar");
+        var speak_bubble = document.getElementById("speak_bubble");
 
         <!-- HERE SHOULD BE THE APPROPRIATE TEXT/IMAGES FOR EVERY CONDITION!-->
         switch (pclass) {
             case "gingivitis":
                 classificationText.textContent = "Gingivitis is a common and mild form of gum disease (periodontal disease) that causes irritation, redness, and swelling (inflammation) of your gingiva, the part of your gum around the base of your teeth. Gingivitis can be managed and even reversed with proper oral care and hygiene.";
-                tipsText.textContent = "<h2  style='color: #640808; text-align: center;'>Tips for Gingivitis</h2>" +
+                tipsText.innerHTML= "<h2  style='color: #640808; text-align: center;'>Tips for Gingivitis</h2>" +
         "<ol>" +
         "<li>Brush your teeth at least twice a day using fluoride toothpaste.</li>" +
         "<li>ake it a daily habit to remove plaque and food particles from between your teeth.</li>" +
@@ -139,7 +144,7 @@
                 break;
             case "hypodontia":
                 classificationText.textContent = "Hypodontia is a condition characterized by the congenital absence of one or more teeth, typically the permanent ones. It can affect both primary and permanent teeth, and it often requires specialized dental care.";
-                tipsText.textContent = "<h2 style='color: #640808; text-align: center;'>Tips for Hypodontia</h2>" +
+                tipsText.innerHTML= "<h2 style='color: #640808; text-align: center;'>Tips for Hypodontia</h2>" +
         "<ol>" +
         "<li>An orthodontic evaluation is essential to address issues related to spacing, alignment, and bite due to missing teeth. </li>" +
         "<li>In cases where missing teeth need replacement, prosthodontic solutions like dental implants, bridges, or partial dentures can be considered. </li>" +
@@ -154,7 +159,7 @@
                 break;
             case "discoloration":
                 classificationText.textContent = "Discoloration of teeth can occur due to various factors, including staining from food and beverages, tobacco use, or underlying dental issues.";
-                tipsText.textContent = "<h2 style='color: #640808; text-align: center;'>Tips for Discoloration</h2>" +
+                tipsText.innerHTML = "<h2 style='color: #640808; text-align: center;'>Tips for Discoloration</h2>" +
         "<ol>" +
         "<li>Brush your teeth at least twice a day and floss daily to remove food particles and plaque.  </li>" +
         "<li>Reduce the consumption of highly staining substances, such as coffee, tea, red wine, and dark-colored berries.  </li>" +
@@ -164,13 +169,13 @@
         "<li>Visit your dentist for regular check-ups and professional cleanings. Dental professionals can remove surface stains and detect any underlying issues early.</li>" +
         "</ol>";  
 
-                classificationImage.src="../static/img/animated_conditions/Discoloration.png";
+                classificationImage.src="/static/img/animated_conditions/Discoloration .png";
                 exampleImg1.src="../static/img/teeth/discoloration/Tooth_Discoloration_0_161.jpg";
                 exampleImg2.src="../static/img/teeth/discoloration/Tooth_Discoloration_0_165.jpg";
                 break;
             case "caries":
                 classificationText.textContent = "Caries, commonly referred to as dental cavities or tooth decay, is the deterioration of tooth structure caused by acids produced by bacteria in your mouth";
-                tipsText.textContent = "<h2 style='color: #640808; text-align: center;'>Tips for Caries"+
+                tipsText.innerHTML= "<h2 style='color: #640808; text-align: center;'>Tips for Caries"+
         "<ol>" +
         "<li>Brush your teeth at least twice a day using fluoride toothpaste and a soft-bristle toothbrush. Make sure to brush for two minutes each time.  </li>" +
         "<li> Floss daily to remove food particles and plaque from between your teeth and along the gumline where your toothbrush may not reach.  </li>" +
@@ -185,7 +190,7 @@
                 break;
             case "calculus":
                 classificationText.textContent = "Calculus refers to a dental condition commonly known as tartar. Tartar is a hardened, calcified deposit that forms on the surface of teeth. This formation is a result of the mineralization of dental plaque, which is a soft, sticky film of bacteria and food particles that accumulates on your teeth.";
-                tipsText.textContent = "<h2 style='color: #640808; text-align: center;'>Tips for Calculus"+
+                tipsText.innerHTML= "<h2 style='color: #640808; text-align: center;'>Tips for Calculus"+
         "<ol>" +
         "<li>Brush your teeth at least twice a day using fluoride toothpaste and a soft-bristle toothbrush. Pay attention to brushing all surfaces of your teeth and along the gumline.  </li>" +
         "<li> Floss daily to remove plaque and food particles from between your teeth. Plaque buildup can lead to calculus formation.  </li>" +
@@ -209,20 +214,37 @@
         "<li>Limit the consumption of sugary snacks, beverages, and acidic foods.</li>" +
         "<li>If you consume them, do so in moderation and rinse your mouth with water afterward.</li>" +
         "</ol>";
-    classificationImage.src = "../static/img/animated_conditions/healthy.png";
-    exampleImg1.src = "../static/img/teeth/healthyteeth/22.jpg";
-    exampleImg2.src = "../static/img/teeth/healthyteeth/27.jpg";
+                classificationImage.src = "../static/img/animated_conditions/healthy.png";
+                exampleImg1.src = "../static/img/teeth/healthyteeth/22.jpg";
+                exampleImg2.src = "../static/img/teeth/healthyteeth/27.jpg";
     break;
+
+
 default:
     classificationText.textContent = "No specific content available for this class.";
 }
-
-        // Add functionality to your buttons here if needed
+         // Handle cscore and pclass conditions using if statements
+    if (cscore >= 0.50 && pclass === "healtyteeth") {
+        avatar.src = "../static/img/avatar/content.svg";
+        speak_bubble.src ="../static/img/avatar/luv.svg";
+    } else if (cscore < 0.50 && pclass === "healtyteeth") {
+        avatar.src = "../static/img/avatar/confused.svg";
+        speak_bubble.src ="../static/img/avatar/question.svg";
+    } else if (cscore >= 0.50 && pclass !== "healtyteeth") {
+        avatar.src = "../static/img/avatar/inpain.svg";
+        speak_bubble.src ="../static/img/avatar/exclemation.svg";
+    } else if (cscore < 0.50 && pclass !== "healtyteeth") {
+        avatar.src = "../static/img/avatar/confused-sad.svg";
+        speak_bubble.src ="../static/img/avatar/question.svg";
     }
+
+    }
+
 
     // Call the updateContent function with the initial pclass value
     var initialPclass = "{{ pclass }}";
-    updateContent(initialPclass);
+    var initialCscore = "{{ cscore }}"
+    updateContent(initialPclass, initialCscore);
 </script>
 
 

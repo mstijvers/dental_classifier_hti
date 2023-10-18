@@ -10,6 +10,9 @@ import cv2
 import dlib
 import math
 import json
+import subprocess
+import numpy as np
+from lime.lime_image import LimeImageExplainer
 
 app = Flask(__name__, template_folder="templates")
 
@@ -60,7 +63,6 @@ def video_feed():
     return Response(gen(video_stream),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
-
 # reset video view if when button is pressed
 @app.route('/reset_camera', methods=['POST'])
 def reset_camera():
@@ -69,16 +71,17 @@ def reset_camera():
     return render_template("index.html")
 
 
-# definet the varibles in the beginning
+# define the variables in the beginning
 result = None
 formatted_confidence_score = None
 predicted_class = None
 confidence_score = None
+explanation_overlay=None
 
 # classify image
 @app.route("/classify", methods=["POST"])
 def classify():
-    global result, formatted_confidence_score, predicted_class, confidence_score
+    global result, formatted_confidence_score, predicted_class, confidence_score, explanation_overlay
 
     image_path = "static/images/cropped_mouth.jpg"  # Path to the cropped_mouth.jpg image
 
@@ -115,47 +118,15 @@ def classify():
 
         # Prepare the result message
         result = f"Predicted Class: {predicted_class}, Confidence Score: {confidence_score:.2f}"
+        subprocess.run(['python', 'explainable.py'])  # Run the explainable.py script
 
-    # if request.method == "POST":
-    #     if "image" in request.files:
-    #         uploaded_image = request.files["image"]
-    #         if uploaded_image.filename != "":
-    #             # Save the uploaded image
-    #             image_path = os.path.join("static/images", uploaded_image.filename)
-    #             uploaded_image.save(image_path)
-    #
-    #             # Preprocess the image
-    #             img = Image.open(image_path)
-    #             img = transform(img)
-    #             img = img.unsqueeze(0)  # Add a batch dimension (single image)
-    #
-    #             # Pass the image through the model
-    #             print(img.shape)
-    #             with torch.no_grad():
-    #                 output = model(img)
-    #
-    #             # Apply softmax to obtain class probabilities
-    #             softmax = nn.Softmax(dim=1)
-    #             probabilities = softmax(output)
-    #             class_labels = ["gingivitis", "hypodontia", "discoloration", "caries", "calculus", "healtyteeth"]
-    #             predicted_class = class_labels[torch.argmax(probabilities)]
-    #             confidence_score = torch.max(probabilities).item()
-    #
-    #             # Check if confidence_score is a valid number
-    #             if confidence_score is not None and not math.isnan(confidence_score):
-    #                 # Convert confidence_score to a percentage
-    #                 confidence_score_percentage = confidence_score * 100
-    #                 formatted_confidence_score = f"{confidence_score_percentage:.0f}%"
-    #             else:
-    #                 # Handle the case where confidence_score is not a valid number
-    #                 formatted_confidence_score = "N/A"
-    #
-    #             # Prepare the result message
-    #             result = f"Predicted Class: {predicted_class}, Confidence Score: {confidence_score:.2f}"
+    print(predicted_class, confidence_score)
+    return render_template("results.html",
+                           pclass=predicted_class,
+                           cscore=confidence_score,
+                           cscore_p=formatted_confidence_score,
+                           )
 
-    print(predicted_class)
-    return render_template("results.html", pclass=predicted_class, cscore=confidence_score,cscore_p=formatted_confidence_score)
-    
 @app.route('/about')
 def about():
     return render_template('about.html')

@@ -315,17 +315,17 @@ li {
 }
 
 
-#bottom-right-image {
+#avatar {
             position: fixed;
-            bottom: 0;
-            right: 0;
-            margin: 10px; 
+            bottom: 10em;
+            right: 9em;
+            margin: 15px;
 }
 
-#confused-image {
-            position: fixed;
-            bottom: 0;
-            right: 0;
-            margin: 10px; 
+#speak_bubble {
+    position: fixed;
+    bottom: 16em;
+    right: 7em;
+    margin: 15px;
 }
 
