@@ -9,6 +9,7 @@ import torch.optim as optim
 from torch.utils.data import DataLoader, TensorDataset
 from torchvision import transforms
 import cv2
+from sklearn.metrics import confusion_matrix, accuracy_score, recall_score, precision_score
 
 # Define class labels
 class_labels = ["gingivitis", "hypodontia", "discoloration", "caries", "calculus", "healthyteeth"]
@@ -83,9 +84,10 @@ criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=0.001)
 
 # Train the model
-num_epochs = 5  # Choose the number of training epochs as needed
-device = torch.device("cuda" if torch.cuda.is available() else "cpu")
+num_epochs = 10  # Choose the number of training epochs as needed
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model.to(device)
+
 
 for epoch in range(num_epochs):
     model.train()
@@ -106,7 +108,7 @@ for epoch in range(num_epochs):
     print(f"Epoch {epoch + 1}/{num_epochs}, Loss: {running_loss / len(train_loader)}")
 
 # Save the model's weights and structure
-torch.save(model.state_dict(), 'with_healthyteeth_model.pth')
+torch.save(model.state_dict(), 'with_healthyteeth_model_10epochs.pth')
 
 # Save the class label mapping for use during inference
 import json
@@ -118,14 +120,51 @@ model.eval()
 correct = 0
 total = 0
 
+predictions = []
+true_labels = []
+
+
 with torch.no_grad():
     for inputs, labels in test_loader:
         inputs, labels = inputs.to(device), labels.to(device)
         outputs = model(inputs)
-        _, predicted = torch.max(outputs.data, 1)
-        total += labels.size(0)
-        correct += (predicted == labels).sum().item()
+        _, predicted = torch.max(outputs, 1)
+        predictions.extend(predicted.cpu().numpy())
+        true_labels.extend(labels.cpu().numpy())
 
-accuracy = correct / total
-print(f"Test Accuracy: {accuracy * 100:.2f}%")
+# 计算混淆矩阵
+cm = confusion_matrix(true_labels, predictions)
+
+# 计算准确率、错误率、召回率和精确度
+accuracy = accuracy_score(true_labels, predictions)
+error_rate = 1 - accuracy
+recall = recall_score(true_labels, predictions, average='weighted')
+precision = precision_score(true_labels, predictions, average='weighted')
+
+# 计算模型损失
+criterion = nn.CrossEntropyLoss()  # 适用于分类任务
+total_loss = 0.0
+
+with torch.no_grad():
+    for inputs, labels in test_loader:
+        inputs, labels = inputs.to(device), labels.to(device)
+        outputs = model(inputs)
+        loss = criterion(outputs, labels)
+        total_loss += loss.item()
+
+average_loss = total_loss / len(test_loader)
+
+# 打印性能指标
+print("Confusion Matrix:")
+print(cm)
+print(f"Error Rate: {error_rate * 100:.2f}%")
+print(f"Model Loss: {average_loss:.4f}")
+print(f"Accuracy: {accuracy * 100:.2f}%")
+print(f"Recall: {recall:.4f}")
+print(f"Precision: {precision:.4f}")
+
+
+
+
+
 

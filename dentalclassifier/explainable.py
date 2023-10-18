@@ -109,7 +109,6 @@ predict_fn_lime = partial(predict_fn, transform_required=True)
 
 def overlay_explainability_layer(explanation):
     temp, mask = explanation.get_image_and_mask(visualized_class, positive_only=True, num_features=5, hide_rest=False)
-
     plt.imsave("static/images/analyzed_teeth.jpg", mark_boundaries(temp/2 + 0.3, mask, color=(0.5294117647058824, 0.09803921568627451, 0.19607843137254902)))
     # Open the saved image
     overlayed_image = Image.open("static/images/analyzed_teeth.jpg")
@@ -117,7 +116,6 @@ def overlay_explainability_layer(explanation):
     overlayed_image = overlayed_image.resize((org_width, org_height))
     # Save the resized overlayed image
     overlayed_image.save("static/images/analyzed_teeth_resized.jpg")
-
 
 
 def main(img):
