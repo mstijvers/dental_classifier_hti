@@ -123,7 +123,7 @@ nav a:hover {
     background-color: #640808;
     color: white;
     border: none;
-    cursor: not-allowed;
+    cursor: pointer; 
     font-family: Gabarito, sans-serif;
     border-radius: 25px; /* This creates completely rounded sides (half circles) */
 }
@@ -314,4 +314,18 @@ li {
     margin-bottom: 5px;
 }
 
+
+#bottom-right-image {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            margin: 10px; 
+}
+
+#confused-image {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            margin: 10px; 
+}
 

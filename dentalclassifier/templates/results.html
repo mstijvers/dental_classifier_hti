@@ -8,6 +8,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Dental Website</title>
+
 </head>
 <body>
 <div style=width:100%;>
@@ -24,8 +25,6 @@
             <a href="http://127.0.0.1:8000/about">About this AI</a>
         </nav>
     </div>
-
-
 
         <div class="content-container">
 
@@ -59,6 +58,19 @@
                 </div>
             </div>
         </div>
+        
+        <img id="bottom-right-image" src="/static/img/avatar/content.svg" style="width: 8%; height: 8%;">
+        <img id="confused-image" src="/static/img/avatar/confused.svg" style="width: 8%; height: 8%; display: none;">
+        
+        <script>
+        var cscore_p = 60; // 
+
+        if (cscore_p > 50) {
+            document.getElementById("bottom-right-image").style.display = "block";
+        } else {
+            document.getElementById("confused-image").style.display = "block";
+        }
+    </script>
 </div>
 
 <!-- The Tips Modal -->
@@ -97,7 +109,6 @@
             <img style="border-radius: 1em;" id = image_example2 src="../cropped_mouth.jpg" >
       </form>
   </div>
-
 </div>
 
 
