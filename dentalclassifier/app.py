@@ -10,7 +10,6 @@ import cv2
 import dlib
 import math
 import json
-import subprocess
 import numpy as np
 from lime.lime_image import LimeImageExplainer
 
@@ -62,6 +61,7 @@ def gen(camera):
 def video_feed():
     return Response(gen(video_stream),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
+
 
 # reset video view if when button is pressed
 @app.route('/reset_camera', methods=['POST'])
@@ -118,15 +118,15 @@ def classify():
 
         # Prepare the result message
         result = f"Predicted Class: {predicted_class}, Confidence Score: {confidence_score:.2f}"
-        subprocess.run(['python', 'explainable.py'])  # Run the explainable.py script
 
-    print(predicted_class, confidence_score)
+
+    print(predicted_class)
     return render_template("results.html",
                            pclass=predicted_class,
                            cscore=confidence_score,
                            cscore_p=formatted_confidence_score,
                            )
-
+    
 @app.route('/about')
 def about():
     return render_template('about.html')
