@@ -12,7 +12,6 @@ from tanden import SimpleCNN
 import torch
 import torchvision.transforms as transforms
 import torch.nn as nn
-visualized_class = 4
 
 def fetch_model(model_path) -> nn.Module:
     """
@@ -102,7 +101,7 @@ def predict_fn(images, transform_required=False):
 
 predict_fn_lime = partial(predict_fn, transform_required=True)
 
-def overlay_explainability_layer(explanation):
+def overlay_explainability_layer(explanation, visualized_class):
     temp, mask = explanation.get_image_and_mask(visualized_class, positive_only=True, num_features=5, hide_rest=False)
     plt.imsave("out.png", mark_boundaries(temp / 2 + 0.5, mask))
     
@@ -110,16 +109,18 @@ def overlay_explainability_layer(explanation):
 
 def main(img):
     img = process_image(img)
+    lime_img = transform_classifier_to_lime(img)
+    pred = predict_fn_lime(lime_img)[0].argmax()    
     explainer = lime_image.LimeImageExplainer()
     explanation = explainer.explain_instance(
-        transform_classifier_to_lime(img), 
+        lime_img, 
         classifier_fn=predict_fn_lime, 
         labels = ["gingivitis", "hypodontia", "discoloration", "caries", "calculus", "healthy teeth"],
         top_labels=5, 
         hide_color=0, 
-        num_samples=10
+        num_samples=100
     )
-    overlay_explainability_layer(explanation)
+    overlay_explainability_layer(explanation, pred)
 
 if __name__ == "__main__":
     main(img)
