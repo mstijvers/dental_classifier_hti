@@ -55,14 +55,7 @@ nav a:hover {
     padding-top: 50px;
 }
 
-.text-container {
-    width: 70%; 
-    margin: 0 auto; 
-    text-align: center; 
-    padding: 20px; 
-    box-sizing: border-box; 
-    color:#232726;
-}
+
 
 .text-container {
     width: 70%; 
@@ -71,7 +64,10 @@ nav a:hover {
     padding: 20px; 
     box-sizing: border-box; 
     color:#232726;
+    z-index: 2;
+    position: relative;
 }
+
 
 
 .text-container img {
@@ -111,7 +107,7 @@ nav a:hover {
 }
 
 .analysis {
-    flex-basis: 50%;
+    flex-basis: 60%;
     padding-left: 20px;
     border-left: 0px solid #abdcd8;
 }
@@ -127,7 +123,7 @@ nav a:hover {
     background-color: #640808;
     color: white;
     border: none;
-    cursor: not-allowed;
+    cursor: pointer; 
     font-family: Gabarito, sans-serif;
     border-radius: 25px; /* This creates completely rounded sides (half circles) */
 }
@@ -160,8 +156,8 @@ nav a:hover {
 
 .image-container {
     position: absolute;
-            bottom: 10px; 
-            right: 10px; 
+            bottom: 10px;
+            right: 10px;
 }
 
 .small-text {
@@ -252,16 +248,17 @@ nav a:hover {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
-  padding-top: 100px; /* Location of the box */
+  padding-top: 15%; /* Location of the box */
   left: 0;
   top: 0;
   width: 100%; /* Full width */
   height: 100%; /* Full height */
   overflow: auto; /* Enable scroll if needed */
   background-color: white; /* Fallback color */
-  background-color: rgba(255,255,255,0.4); /* Black w/ opacity */
-
+  background-color: rgba(255,255,255,0.7); /* Black w/ opacity */
 }
+
+
 
 /* Modal Content */
 .modal-content {
@@ -270,7 +267,7 @@ nav a:hover {
   padding: 20px;
   border: 3px solid #861A31;
   width: 50%;
-  height: 60%;
+  height: auto;
   border-radius: 20px;
 }
 
@@ -290,7 +287,45 @@ nav a:hover {
 }
 
 .myteeth{
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
+
+
+
+#check-button {
+    background-color: #640808;
+    color: white; 
+    padding: 10px 40px; 
+    border: none; 
+    cursor: pointer; 
+    font-family: Gabarito, sans-serif;
+    border-radius: 25px; 
+}
+
+#check-button:hover {
+    background-color: #861A31; 
+}
+
+li {
+    padding-left: 20px;
+    list-style-image: url("../static/img/avatar/luv.svg");
+    margin-bottom: 5px;
+}
+
+
+#avatar {
+            position: fixed;
+            bottom: 10em;
+            right: 9em;
+            margin: 15px;
+}
+
+#speak_bubble {
+    position: fixed;
+    bottom: 16em;
+    right: 7em;
+    margin: 15px;
+}
+

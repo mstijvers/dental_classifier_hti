@@ -8,127 +8,149 @@ from tanden import SimpleCNN
 import torch.optim as optim
 from torch.utils.data import DataLoader, TensorDataset
 from torchvision import transforms
-import cv2
+from sklearn.metrics import confusion_matrix, accuracy_score, recall_score, precision_score
+from torch.optim.lr_scheduler import StepLR  # 导入 StepLR 学习率调度器
 
-# 定义类别标签
+# Define class labels
 class_labels = ["gingivitis", "hypodontia", "discoloration", "caries", "calculus", "healthyteeth"]
 
-# 创建空列表来存储图像和标签对
+# Create empty lists to store image and label pairs
 data = []
 labels = []
 
-# 数据文件夹的相对路径
+# Relative path to the data folder
 data_folder = "Dentaldata"
 
-# 修改加载图像的部分代码
+# Load and preprocess images
 for class_label in class_labels:
     class_folder = os.path.join(data_folder, class_label)
     for filename in os.listdir(class_folder):
-        if filename.endswith(".jpg"):  # 假设图像文件都以 .jpg 结尾
+        if filename.endswith(".jpg"):
             img_path = os.path.join(class_folder, filename)
             try:
-                with Image.open(img_path) as img:  # 使用 with 语句加载图像
+                with Image.open(img_path) as img:
                     if img is not None and len(np.array(img).shape) == 3:
                         data.append(img)
-                        labels.append(class_labels.index(class_label))  # 使用类别的索引作为标签
+                        labels.append(class_labels.index(class_label))
                         print(f"Loaded image: {img_path}, Label: {class_labels.index(class_label)}")
                     else:
                         print(f"Skipped invalid image: {img_path}")
             except Exception as e:
                 print(f"Error processing image {img_path}: {e}")
-                
 
-# 将数据转换为NumPy数组
+# Convert data to NumPy arrays
 data = np.array(data, dtype=object)
 labels = np.array(labels)
 
-# 添加以下代码来检查数据
+# Print dataset statistics
 print(f"Total images: {len(data)}")
 print(f"Total labels: {len(labels)}")
 for class_label in class_labels:
     class_count = (labels == class_labels.index(class_label)).sum()
     print(f"Total images in class '{class_label}': {class_count}")
 
-# 划分数据集为训练集和测试集
+# Split the dataset into training, validation, and testing sets
 X_train, X_test, y_train, y_test = train_test_split(data, labels, test_size=0.2, random_state=42)
+X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.2, random_state=42)
 
-# 创建模型
-num_classes = 6  # 假设有6个类别
+# Create the model
+num_classes = 6
 model = SimpleCNN(num_classes)
 
-
-# Modify the transformation to handle RGBA images by converting them to RGB
+# Define data transformations
 transform = transforms.Compose([
     transforms.Resize((224, 224)),
     transforms.ToTensor(),
-    transforms.Lambda(lambda x: x[:3, :, :]),  # Remove the alpha channel (retain RGB channels only)
+    transforms.Lambda(lambda x: x[:3, :, :]),
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 ])
 
-# Convert X_train images to PIL Images before applying the transformations
-X_train_pil = [Image.fromarray(np.array(image)) for image in X_train]
-X_train_tensor = torch.stack([transform(image) for image in X_train_pil])
-
-# Convert X_test images to PIL Images before applying the transformations
-X_test_pil = [Image.fromarray(np.array(image)) for image in X_test]
-X_test_tensor = torch.stack([transform(image) for image in X_test_pil])
-
-# Create data loaders for both the training and testing datasets
-train_dataset = TensorDataset(X_train_tensor, torch.tensor(y_train))
-test_dataset = TensorDataset(X_test_tensor, torch.tensor(y_test))
-
+# Create data loaders for training, validation, and testing datasets
 batch_size = 32
+train_dataset = TensorDataset(torch.stack([transform(img) for img in X_train]), torch.tensor(y_train))
+val_dataset = TensorDataset(torch.stack([transform(img) for img in X_val]), torch.tensor(y_val))
+test_dataset = TensorDataset(torch.stack([transform(img) for img in X_test]), torch.tensor(y_test))
 train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+val_loader = DataLoader(val_dataset, batch_size=batch_size)
 test_loader = DataLoader(test_dataset, batch_size=batch_size)
 
-
-# 定义损失函数和优化器
+# Define the loss function and optimizer
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=0.001)
 
-# 训练模型
-num_epochs = 5  # 根据需要选择训练周期数
+# Train the model
+num_epochs = 20
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model.to(device)
+
+# Create StepLR learning rate scheduler
+scheduler = StepLR(optimizer, step_size=3, gamma=0.5)
+
+best_val_loss = float('inf')  # Track the best validation loss
 
 for epoch in range(num_epochs):
     model.train()
     running_loss = 0.0
     for inputs, labels in train_loader:
-        inputs, labels = inputs.to(device), labels.to(device)
-        
         optimizer.zero_grad()
-        
-        outputs = model(inputs)
-        loss = criterion(outputs, labels)
+        outputs = model(inputs.to(device))
+        loss = criterion(outputs, labels.to(device))
         loss.backward()
         optimizer.step()
-        
         running_loss += loss.item()
-    
-    # 打印每个周期的损失
-    print(f"Epoch {epoch + 1}/{num_epochs}, Loss: {running_loss / len(train_loader)}")
 
-# 保存模型的权重和结构
-torch.save(model.state_dict(), 'with_healthyteeth_model.pth')
+    # Adjust learning rate
+    scheduler.step()
 
-# 保存类别标签映射，以便在推理时使用
-import json
-with open('class_labels.json', 'w') as f:
-    json.dump(class_labels, f)
+    # Print training loss and learning rate
+    print(f"Epoch {epoch + 1}/{num_epochs}, LR: {scheduler.get_last_lr()[0]}, Loss: {running_loss / len(train_loader)}")
 
-# 在测试集上评估模型
+    # Validation
+    model.eval()
+    val_loss = 0.0
+    with torch.no_grad():
+        for inputs, labels in val_loader:
+            outputs = model(inputs.to(device))
+            val_loss += criterion(outputs, labels.to(device)).item()
+
+    # Save the model with the best validation loss
+    if val_loss < best_val_loss:
+        best_val_loss = val_loss
+        torch.save(model.state_dict(), 'best_model.pth')
+
+# Load the best model for testing
+model.load_state_dict(torch.load('best_model.pth'))
+
+# Evaluate the model on the test set
 model.eval()
 correct = 0
 total = 0
+predictions = []
+true_labels = []
 
 with torch.no_grad():
     for inputs, labels in test_loader:
         inputs, labels = inputs.to(device), labels.to(device)
         outputs = model(inputs)
-        _, predicted = torch.max(outputs.data, 1)
-        total += labels.size(0)
-        correct += (predicted == labels).sum().item()
+        _, predicted = torch.max(outputs, 1)
+        predictions.extend(predicted.cpu().numpy())
+        true_labels.extend(labels.cpu().numpy())
 
-accuracy = correct / total
-print(f"Test Accuracy: {accuracy * 100:.2f}%")
+# Compute evaluation metrics
+cm = confusion_matrix(true_labels, predictions)
+accuracy = accuracy_score(true_labels, predictions)
+error_rate = 1 - accuracy
+recall = recall_score(true_labels, predictions, average='weighted')
+precision = precision_score(true_labels, predictions, average='weighted')
+
+print("Confusion Matrix:")
+print(cm)
+print(f"Error Rate: {error_rate * 100:.2f}%")
+print(f"Accuracy: {accuracy * 100:.2f}%")
+print(f"Recall: {recall:.4f}")
+print(f"Precision: {precision:.4f}")
+
+
+
+
+

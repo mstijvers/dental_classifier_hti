@@ -162,5 +162,6 @@ venv/
 dentalclassifier/Dentaldata/
 .DS_Store
 detalclassifier/static/images/
+_MACOSX/
 dentalclassifier/cropped_mouth.jpg
 dentalclassifier/mouth_bounding_box.jpg
