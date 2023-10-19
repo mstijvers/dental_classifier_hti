@@ -12,7 +12,7 @@ import torch.nn as nn
 
 
 image_path = "./static/images/cropped_mouth.jpg"
-model_path = "../dental_classifier.pth"
+model_path = "../with_healthyteeth_model.pth"
 img = Image.open(image_path)
 org_width, org_height = img.size
 
@@ -20,7 +20,7 @@ def fetch_model(model_path) -> nn.Module:
     """
     Imports model weights from file and returns the model set to eval mode.
     """
-    num_classes = 5
+    num_classes = 6
     model = SimpleCNN(num_classes)
     model.load_state_dict(torch.load(model_path))
     model.eval()
