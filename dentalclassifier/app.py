@@ -27,7 +27,10 @@ num_classes = len(class_labels)  # Adjust the number of classes to match your da
 model = SimpleCNN(num_classes)
 
 # Load the pre-trained weights into the model
+
 model.load_state_dict(torch.load('with_healthyteeth_model.pth'))
+
+
 
 # Set the model to evaluation mode
 model.eval()
@@ -115,6 +118,8 @@ def classify():
             # Handle the case where confidence_score is not a valid number
             formatted_confidence_score = "N/A"
 
+        #video wizard of oz'ing
+        #predicted_class = "caries"
 
         # Prepare the result message
         result = f"Predicted Class: {predicted_class}, Confidence Score: {confidence_score:.2f}"
@@ -124,6 +129,7 @@ def classify():
     return render_template("results.html",
                            pclass=predicted_class,
                            cscore=confidence_score,
+                           #cscore_p= f"{78:.0f}%",
                            cscore_p=formatted_confidence_score,
                            )
     
