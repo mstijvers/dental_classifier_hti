@@ -28,7 +28,10 @@ num_classes = len(class_labels)  # Adjust the number of classes to match your da
 model = SimpleCNN(num_classes)
 
 # Load the pre-trained weights into the model
-model.load_state_dict(torch.load('./with_healthyteeth_model.pth'))
+
+model.load_state_dict(torch.load('with_healthyteeth_model.pth'))
+
+
 
 # Set the model to evaluation mode
 model.eval()
