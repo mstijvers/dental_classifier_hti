@@ -10,12 +10,9 @@ import torch
 import torchvision.transforms as transforms
 import torch.nn as nn
 
-# what does this mean? @silke??
-visualized_class = 4
-
 
 image_path = "./static/images/cropped_mouth.jpg"
-model_path = "../dental_classifier.pth"
+model_path = "with_healthyteeth_model.pth"
 img = Image.open(image_path)
 org_width, org_height = img.size
 
@@ -23,7 +20,7 @@ def fetch_model(model_path) -> nn.Module:
     """
     Imports model weights from file and returns the model set to eval mode.
     """
-    num_classes = 5
+    num_classes = 6
     model = SimpleCNN(num_classes)
     model.load_state_dict(torch.load(model_path))
     model.eval()
@@ -107,7 +104,7 @@ def predict_fn(images, transform_required=False):
 
 predict_fn_lime = partial(predict_fn, transform_required=True)
 
-def overlay_explainability_layer(explanation):
+def overlay_explainability_layer(explanation, visualized_class):
     temp, mask = explanation.get_image_and_mask(visualized_class, positive_only=True, num_features=5, hide_rest=False)
     plt.imsave("static/images/analyzed_teeth.jpg", mark_boundaries(temp/2 + 0.3, mask, color=(0.5294117647058824, 0.09803921568627451, 0.19607843137254902)))
     # Open the saved image
@@ -120,16 +117,18 @@ def overlay_explainability_layer(explanation):
 
 def main(img):
     img = process_image(img)
+    lime_img = transform_classifier_to_lime(img)
+    pred = predict_fn_lime(lime_img)[0].argmax()    
     explainer = lime_image.LimeImageExplainer()
     explanation = explainer.explain_instance(
-        transform_classifier_to_lime(img), 
+        lime_img, 
         classifier_fn=predict_fn_lime, 
         labels = ["gingivitis", "hypodontia", "discoloration", "caries", "calculus", "healthy teeth"],
         top_labels=5, 
         hide_color=0, 
-        num_samples=10
+        num_samples=100
     )
-    overlay_explainability_layer(explanation)
+    overlay_explainability_layer(explanation, pred)
 
 if __name__ == "__main__":
     main(img)
