@@ -1,5 +1,6 @@
 import cv2
 import dlib
+
 class VideoCamera(object):
     def __init__(self):
         self.video = cv2.VideoCapture(0)
@@ -9,6 +10,12 @@ class VideoCamera(object):
         self.stable_count = 0
         self.stable_duration = 10
         self.show_cropped_mouth = False  # Flag to control when to show the cropped_mouth.jpg
+        self.true_positives = 0
+        self.false_positives = 0
+        self.false_negatives = 0
+        self.metrics_data = []  # List to store metrics data
+        self.ground_truth_bbox = None
+
     def __del__(self):
         self.video.release()
 
@@ -21,7 +28,6 @@ class VideoCamera(object):
             frame = cv2.flip(frame, 1)  # 1 for horizontal flip
             gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             faces = self.face_detector(gray)
-
 
             for face in faces:
                 landmarks = self.shape_predictor(gray, face)
@@ -45,7 +51,7 @@ class VideoCamera(object):
 
                     # Draw a progress bar around the teeth
                     bar_width = int((max_x - min_x) * progress)
-                    cv2.rectangle(frame, (min_x, min_y-20), (min_x + bar_width, min_y-10), (255, 255, 225 ),
+                    cv2.rectangle(frame, (min_x, min_y-20), (min_x + bar_width, min_y-10), (255, 255, 225),
                                   -1)  # Green progress bar
 
                     # Check if the bounding box is relatively stable for 5 seconds
@@ -83,7 +89,6 @@ class VideoCamera(object):
         ret, jpeg = cv2.imencode('.jpg', frame)
         # Mirror the frame horizontally
 
-
         return jpeg.tobytes()
 
     def toggle_show_cropped_mouth(self):
@@ -92,5 +97,49 @@ class VideoCamera(object):
     def reset_camera(self):
         # Release the video capture and reinitialize it to reset the camera view
         self.show_cropped_mouth = False
-        #self.video.release()
-        #self.video = cv2.VideoCapture(0)
+
+    def set_ground_truth_bbox(self, ground_truth_bbox):
+        self.ground_truth_bbox = ground_truth_bbox
+
+    def evaluate_metrics(self):
+        if self.ground_truth_bbox is None:
+            return None
+
+        # Calculate intersection and union here
+        # Replace the following line with your own logic
+        overlap = 0.7
+
+        if overlap >= 0.5:
+            # True positive: Detected bounding box overlaps significantly with ground truth
+            self.true_positives += 1
+        else:
+            # False positive: Detected bounding box does not overlap significantly with ground truth
+            self.false_positives += 1
+
+        # Calculate false negatives
+        if self.true_positives == 0:
+            self.false_negatives += 1
+
+        # Calculate accuracy, recall, and precision
+        total_predictions = self.true_positives + self.false_positives
+        total_actual_positives = self.true_positives + self.false_negatives
+        accuracy = self.true_positives / total_predictions
+        recall = self.true_positives / total_actual_positives
+        precision = self.true_positives / (self.true_positives + self.false_positives)
+
+        # Print the metrics
+        print(f"Accuracy: {accuracy:.2f}, Recall: {recall:.2f}, Precision: {precision:.2f}")
+
+if __name__ == '__main__':
+    # Create an instance of VideoCamera
+    video_camera = VideoCamera()
+    
+    # Set the ground truth bounding box (change the values as needed)
+    ground_truth_bbox = (100, 100, 200, 200)
+    video_camera.set_ground_truth_bbox(ground_truth_bbox)
+    
+    # Perform evaluations and print metrics
+    num_evaluations = 10  # Change this to the desired number of evaluations
+    for i in range(num_evaluations):
+        video_camera.evaluate_metrics()
+
