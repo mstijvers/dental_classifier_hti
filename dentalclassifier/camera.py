@@ -7,7 +7,7 @@ class VideoCamera(object):
         self.shape_predictor = dlib.shape_predictor('./static/shape_predictor_68_face_landmarks.dat')
         self.prev_bbox = None
         self.stable_count = 0
-        self.stable_duration = 10
+        self.stable_duration = 4
         self.show_cropped_mouth = False  # Flag to control when to show the cropped_mouth.jpg
     def __del__(self):
         self.video.release()

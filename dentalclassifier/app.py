@@ -10,6 +10,7 @@ import cv2
 import dlib
 import math
 import json
+import subprocess
 import numpy as np
 from lime.lime_image import LimeImageExplainer
 
@@ -123,7 +124,7 @@ def classify():
 
         # Prepare the result message
         result = f"Predicted Class: {predicted_class}, Confidence Score: {confidence_score:.2f}"
-
+        subprocess.run(['python', 'explainable.py'], check=True)
 
     print(predicted_class)
     return render_template("results.html",
