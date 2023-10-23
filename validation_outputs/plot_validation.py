@@ -53,8 +53,8 @@ sns.set(font_scale=1.2)
 
 # Create a heatmap with annotations and an adjusted color map
 sns.heatmap(confusion_matrix, annot=True, fmt='d', cmap='YlGnBu', cbar=False,
-            xticklabels=['Class 0', 'Class 1', 'Class 2', 'Class 3', 'Class 4', 'Class 5'],
-            yticklabels=['Class 0', 'Class 1', 'Class 2', 'Class 3', 'Class 4', 'Class 5'])
+            xticklabels=["gingivitis", "hypodontia", "discoloration", "caries", "calculus", "healthyteeth"],
+            yticklabels=["gingivitis", "hypodontia", "discoloration", "caries", "calculus", "healthyteeth"])
 
 plt.xlabel('Predicted')
 plt.ylabel('Actual')
