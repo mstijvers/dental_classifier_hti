@@ -124,7 +124,7 @@ model.load_state_dict(torch.load('best_model.pth'))
 # Evaluate the model on the test set
 model.eval()
 correct = 0
-total = 0
+total = 0 
 predictions = []
 true_labels = []
 

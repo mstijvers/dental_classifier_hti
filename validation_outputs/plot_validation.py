@@ -1,6 +1,41 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+import torch.nn as nn
+from tanden import SimpleCNN
+import torch
+import torch.nn as nn
+
+from model_train_evaluation import train_loader, val_loader,criterion
+
+# Create an instance of the model with the same architecture as in code 1
+num_classes = 6  # Adjust the number of classes to match your dataset
+model = SimpleCNN(num_classes)
+
+
+# model loss
+model.load_state_dict(torch.load('best_model.pth'))
+model.eval()
+
+model.eval()
+test_loss = 0.0
+with torch.no_grad():
+    for inputs, labels in val_loader:
+        inputs, labels = inputs.to(device), labels.to(device)
+        outputs = model(inputs)
+        test_loss += criterion(outputs, labels).item()
+
+avg_test_loss = test_loss / len(val_loader)
+
+
+plt.plot(range(1, num_epochs + 1), train_losses, label="Training Loss", marker='o')
+plt.plot(range(1, num_epochs + 1), val_losses, label="Validation Loss", marker='o')
+plt.xlabel('Epoch')
+plt.ylabel('Loss')
+plt.legend()
+plt.grid(True)
+plt.title('Training and Validation Loss Over Epochs')
+plt.show()
 
 
 # confusion matrix
@@ -34,24 +69,6 @@ plt.tight_layout()
 
 plt.savefig('Confusion_Matrix.png', dpi=300, bbox_inches='tight')
 plt.show()
-
-
-# model loss
-epochs = list(range(1, 21))
-loss = [1.4408316430838213, 0.680382578269295, 0.43636820198077225, 0.24721717881038785, 0.17839390984938844,
-        0.15188998164123166, 0.12588839866625873, 0.12234973330202553, 0.11907313137983336, 0.10706081269207694,
-        0.10475502631869978, 0.10395229643757414, 0.09902277816613407, 0.09829039585209735, 0.09808958369641281,
-        0.09411195520837994, 0.09387837909162045, 0.09414681163616478, 0.09217214356961093, 0.0919098891975844]
-learning_rates = [0.001, 0.001, 0.0005, 0.0005, 0.0005, 0.00025, 0.00025, 0.00025, 0.000125, 0.000125, 0.000125,
-                  6.25e-05, 6.25e-05, 6.25e-05, 3.125e-05, 3.125e-05, 3.125e-05, 1.5625e-05, 1.5625e-05, 1.5625e-05]
-
-plt.figure(figsize=(10, 5))
-plt.plot(epochs, loss, marker='o', linestyle='-', color='b', label='Loss')
-plt.xlabel('Epoch')
-plt.ylabel('Loss')
-plt.title('Model Loss Over Epochs')
-plt.xticks(epochs)
-plt.grid(True)
 
 # learning rate
 plt.twinx()  

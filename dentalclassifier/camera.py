@@ -123,12 +123,12 @@ class VideoCamera(object):
         # Calculate accuracy, recall, and precision
         total_predictions = self.true_positives + self.false_positives
         total_actual_positives = self.true_positives + self.false_negatives
-        accuracy = self.true_positives / total_predictions
+      
         recall = self.true_positives / total_actual_positives
         precision = self.true_positives / (self.true_positives + self.false_positives)
 
         # Print the metrics
-        print(f"Accuracy: {accuracy:.2f}, Recall: {recall:.2f}, Precision: {precision:.2f}")
+        print(f" Recall: {recall:.2f}, Precision: {precision:.2f}")
 
 if __name__ == '__main__':
     # Create an instance of VideoCamera
